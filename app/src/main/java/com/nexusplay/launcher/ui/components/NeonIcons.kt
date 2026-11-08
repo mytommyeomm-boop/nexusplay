@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathBuilder
+import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 /** Custom stroke icon set so the app has its own look and needs no icon library. */
@@ -16,14 +17,13 @@ private fun icon(name: String, block: PathBuilder.() -> Unit): ImageVector =
         defaultHeight = 24.dp,
         viewportWidth = 24f,
         viewportHeight = 24f
-    ).addPath(
-        pathData = PathBuilder().apply(block).getNodes(),
+    ).path(
         fill = null,
         stroke = SolidColor(Color.White),
         strokeLineWidth = 1.8f,
         strokeLineCap = StrokeCap.Round,
         strokeLineJoin = StrokeJoin.Round
-    ).build()
+    ) { block() }.build()
 
 private fun PathBuilder.line(x1: Float, y1: Float, x2: Float, y2: Float) {
     moveTo(x1, y1); lineTo(x2, y2)

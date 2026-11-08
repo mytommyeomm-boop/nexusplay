@@ -209,11 +209,11 @@ fun ScreenTitle(code: String, title: String, caption: String, modifier: Modifier
     }
 }
 
-/** Section divider: monospaced caption with a seam line running to the edge. */
+/** Section divider: monospaced caption with a seam line running to the edge. The caller supplies horizontal padding. */
 @Composable
 fun SectionLabel(text: String, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 20.dp),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text.uppercase(), style = MaterialTheme.typography.labelSmall, color = Titanium)

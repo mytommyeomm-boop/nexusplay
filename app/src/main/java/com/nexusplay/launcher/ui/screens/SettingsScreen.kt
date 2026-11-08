@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import com.nexusplay.launcher.core.DeviceInfo
 import com.nexusplay.launcher.core.DeviceInfoReader
 import com.nexusplay.launcher.ui.components.GlassCard
+import com.nexusplay.launcher.ui.components.HwPanel
+import com.nexusplay.launcher.ui.components.LampTag
 import com.nexusplay.launcher.ui.components.NeonIcons
 import com.nexusplay.launcher.ui.components.ScreenHeader
 import com.nexusplay.launcher.ui.components.ScreenList
@@ -58,7 +60,7 @@ private val plannedEntries = listOf(
 )
 
 @Composable
-fun SettingsScreen(contentPadding: PaddingValues) {
+fun SettingsScreen(contentPadding: PaddingValues, onOpenJoystick: () -> Unit) {
     val context = LocalContext.current
     val device = remember { DeviceInfoReader.read(context) }
     val version = remember { appVersion(context) }
@@ -66,6 +68,24 @@ fun SettingsScreen(contentPadding: PaddingValues) {
     ScreenList(contentPadding) {
         item { ScreenHeader("Settings", "Your device and app preferences") }
         item { Box(Modifier.staggeredEntrance(1)) { DeviceCard(device) } }
+        item { SectionTitle("Controls") }
+        item {
+            Box(Modifier.padding(horizontal = 20.dp).staggeredEntrance(2)) {
+                HwPanel(Modifier.fillMaxWidth(), onClick = onOpenJoystick) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Joystick settings", style = MaterialTheme.typography.titleSmall)
+                            Text(
+                                "Size, sensitivity, deadzones, presets and a live test area",
+                                style = MaterialTheme.typography.bodySmall, color = TextSecondary
+                            )
+                        }
+                        Spacer(Modifier.width(10.dp))
+                        LampTag("Live", com.nexusplay.launcher.ui.theme.AccentLime)
+                    }
+                }
+            }
+        }
         item { SectionTitle("Preferences") }
         item {
             Column(

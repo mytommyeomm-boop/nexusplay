@@ -24,12 +24,17 @@ import androidx.navigation.compose.rememberNavController
 import com.nexusplay.launcher.ui.components.HwNavDock
 import com.nexusplay.launcher.ui.screens.HomeScreen
 import com.nexusplay.launcher.ui.screens.ImportScreen
+import com.nexusplay.launcher.ui.screens.JoystickSettingsScreen
 import com.nexusplay.launcher.ui.screens.LibraryScreen
 import com.nexusplay.launcher.ui.screens.ManagerScreen
 import com.nexusplay.launcher.ui.screens.SettingsScreen
 import com.nexusplay.launcher.ui.theme.TextPrimary
 
-private fun tabIndex(route: String?) = Destination.entries.indexOfFirst { it.route == route }
+const val JOYSTICK_ROUTE = "joystick"
+
+// Sub-screens (not in the tab strip) count as "deeper" than every tab.
+private fun tabIndex(route: String?) =
+    Destination.entries.indexOfFirst { it.route == route }.let { if (it < 0) 99 else it }
 
 /** Direction-aware shift: content slides the way the tab strip is travelling. Short, cheap, no scaling. */
 private fun AnimatedContentTransitionScope<NavBackStackEntry>.direction(): Int =
@@ -83,7 +88,8 @@ fun AppNavigation() {
             composable(Destination.Library.route) { LibraryScreen(padding, navigateTo) }
             composable(Destination.Import.route) { ImportScreen(padding) }
             composable(Destination.Manager.route) { ManagerScreen(padding, navigateTo) }
-            composable(Destination.Settings.route) { SettingsScreen(padding) }
+            composable(Destination.Settings.route) { SettingsScreen(padding) { navController.navigate(JOYSTICK_ROUTE) } }
+            composable(JOYSTICK_ROUTE) { JoystickSettingsScreen(padding) { navController.popBackStack() } }
         }
     }
 }

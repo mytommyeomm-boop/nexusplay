@@ -7,16 +7,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
 private val NexusColors = darkColorScheme(
-    primary = NeonCyan,
-    onPrimary = Obsidian,
-    secondary = NeonPurple,
-    onSecondary = Obsidian,
-    tertiary = NeonBlue,
-    background = Obsidian,
+    primary = AccentLime,
+    onPrimary = Graphite0,
+    secondary = AccentCyan,
+    onSecondary = Graphite0,
+    tertiary = AccentOrange,
+    onTertiary = Graphite0,
+    background = Graphite0,
     onBackground = TextPrimary,
-    surface = Panel,
+    surface = Graphite1,
     onSurface = TextPrimary,
-    onSurfaceVariant = TextSecondary
+    surfaceVariant = Graphite2,
+    onSurfaceVariant = TextSecondary,
+    outline = Hairline
 )
 
 @Composable

@@ -3,20 +3,31 @@ package com.nexusplay.launcher.ui.theme
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-val Obsidian = Color(0xFF05060F)
-val Midnight = Color(0xFF0A0D1F)
-val Panel = Color(0xFF111631)
+// --- Cyberdeck palette: graphite bodies, titanium trim, three signal accents ---
+val Graphite0 = Color(0xFF0C0D0F)   // screen background
+val Graphite1 = Color(0xFF131518)   // panel base
+val Graphite2 = Color(0xFF1B1E23)   // raised surface
+val Hairline = Color(0xFF2B3036)    // panel seams
+val Titanium = Color(0xFF8D949C)
+val TitaniumLight = Color(0xFFC5CAD0)
 
-val NeonCyan = Color(0xFF22E4FF)
-val NeonBlue = Color(0xFF3D7BFF)
-val NeonPurple = Color(0xFF9B5CFF)
-val NeonPink = Color(0xFFFF4FD8)
+val AccentLime = Color(0xFFC6FF3D)    // primary action, selection
+val AccentCyan = Color(0xFF35E0E8)    // info, live state
+val AccentOrange = Color(0xFFFF7A1A)  // warning, recording, attention
 
-val TextPrimary = Color(0xFFEAF2FF)
-val TextSecondary = Color(0xFF9AA6C6)
-val TextMuted = Color(0xFF6B7899)
+val TextPrimary = Color(0xFFECEFF2)
+val TextSecondary = Color(0xFFA2A9B1)
+val TextMuted = Color(0xFF6C737B)
 
-val Success = Color(0xFF3DFFA2)
-val Warning = Color(0xFFFFB84D)
+val Success = AccentLime
+val Warning = AccentOrange
 
-val NeonGradient = Brush.horizontalGradient(listOf(NeonCyan, NeonBlue, NeonPurple))
+// --- Legacy names, remapped so screens not yet migrated still compile and match the new palette ---
+val Obsidian = Graphite0
+val Midnight = Graphite1
+val Panel = Graphite2
+val NeonCyan = AccentCyan
+val NeonBlue = Color(0xFF1FA9B0)
+val NeonPurple = AccentLime
+val NeonPink = AccentOrange
+val NeonGradient = Brush.horizontalGradient(listOf(AccentCyan, AccentLime))

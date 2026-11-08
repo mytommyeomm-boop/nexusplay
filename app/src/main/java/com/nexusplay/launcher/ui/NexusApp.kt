@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import com.nexusplay.launcher.ui.components.NeonBackground
+import com.nexusplay.launcher.ui.components.HwBackground
 import com.nexusplay.launcher.ui.components.SplashScreen
 import com.nexusplay.launcher.ui.navigation.AppNavigation
 import kotlinx.coroutines.delay
@@ -26,7 +26,7 @@ fun NexusApp() {
         }
     }
 
-    NeonBackground {
+    HwBackground {
         AnimatedVisibility(
             visible = !booting,
             enter = fadeIn(tween(500)),

@@ -1,18 +1,19 @@
 package com.nexusplay.launcher.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,81 +21,96 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
-import com.nexusplay.launcher.ui.components.GlassCard
-import com.nexusplay.launcher.ui.components.NeonButton
+import androidx.compose.ui.unit.sp
+import com.nexusplay.launcher.ui.components.ChamferShape
+import com.nexusplay.launcher.ui.components.Corner
+import com.nexusplay.launcher.ui.components.DeckButton
+import com.nexusplay.launcher.ui.components.DeckPanel
 import com.nexusplay.launcher.ui.components.NeonIcons
-import com.nexusplay.launcher.ui.components.NeonOrb
 import com.nexusplay.launcher.ui.components.ScreenHeader
 import com.nexusplay.launcher.ui.components.ScreenList
 import com.nexusplay.launcher.ui.components.SectionTitle
-import com.nexusplay.launcher.ui.components.StatusTag
-import com.nexusplay.launcher.ui.components.staggeredEntrance
-import com.nexusplay.launcher.ui.theme.NeonCyan
-import com.nexusplay.launcher.ui.theme.NeonGradient
-import com.nexusplay.launcher.ui.theme.NeonPurple
+import com.nexusplay.launcher.ui.components.SlotOutline
+import com.nexusplay.launcher.ui.components.StatusLed
+import com.nexusplay.launcher.ui.theme.Graphite0
+import com.nexusplay.launcher.ui.theme.Graphite3
+import com.nexusplay.launcher.ui.theme.Lime
+import com.nexusplay.launcher.ui.theme.Orange
 import com.nexusplay.launcher.ui.theme.TextMuted
-import com.nexusplay.launcher.ui.theme.TextSecondary
+import com.nexusplay.launcher.ui.theme.Titanium
 
 @Composable
 fun ImportScreen(contentPadding: PaddingValues) {
     ScreenList(contentPadding) {
         item { ScreenHeader("Import", "Bring a game archive into your library") }
-        item { Box(Modifier.staggeredEntrance(1)) { DropZone() } }
-        item { Box(Modifier.staggeredEntrance(2)) { Formats() } }
-        item { Box(Modifier.staggeredEntrance(3)) { Steps() } }
+        item { IntakePlate() }
+        item { Formats() }
+        item { Steps() }
     }
 }
 
 @Composable
-private fun DropZone() {
-    GlassCard(
+private fun IntakePlate() {
+    DeckPanel(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
-        accent = NeonPurple
+        shape = ChamferShape(24.dp, topLeft = true, bottomRight = true),
+        screws = setOf(Corner.TopRight, Corner.BottomLeft),
+        contentPadding = PaddingValues(18.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(Modifier.height(8.dp))
-            NeonOrb(NeonIcons.Import)
-            Spacer(Modifier.height(14.dp))
-            Text("Select a game archive", style = MaterialTheme.typography.titleMedium)
-            Spacer(Modifier.height(6.dp))
+        SlotOutline(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(132.dp),
+            icon = NeonIcons.Import,
+            pins = true
+        )
+        Spacer(Modifier.height(16.dp))
+        Text("Select a game archive", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(6.dp))
+        Text(
+            "Choose a ZIP, 7Z or TAR file from your phone. Nothing is run during import.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = Titanium
+        )
+        Spacer(Modifier.height(18.dp))
+        // Disabled on purpose: the file picker and extractor are not built yet.
+        DeckButton(text = "Choose file", onClick = {}, icon = NeonIcons.Folder, enabled = false)
+        Spacer(Modifier.height(12.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            StatusLed(Orange)
+            Spacer(Modifier.width(10.dp))
             Text(
-                "Pick a ZIP, 7Z or TAR file from your phone. Nothing is run during import.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextSecondary,
-                textAlign = TextAlign.Center
+                "The file picker is not built yet. It arrives with the extraction update.",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextMuted
             )
-            Spacer(Modifier.height(20.dp))
-            // Disabled on purpose: the file picker and extractor are the next stage.
-            NeonButton(text = "Choose file", onClick = {}, icon = NeonIcons.Folder, enabled = false)
-            Spacer(Modifier.height(10.dp))
-            StatusTag("Available after the next update", NeonPurple)
-            Spacer(Modifier.height(6.dp))
         }
     }
 }
 
 @Composable
 private fun Formats() {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionTitle("Supported formats")
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        SectionTitle("Formats")
         Row(
             modifier = Modifier.padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            StatusTag("ZIP", NeonCyan)
-            StatusTag("7Z", NeonCyan)
-            StatusTag("TAR", NeonCyan)
-            StatusTag("RAR (later)", TextMuted)
+            FormatKey("ZIP", planned = true)
+            FormatKey("7Z", planned = true)
+            FormatKey("TAR", planned = true)
+            FormatKey("RAR", planned = false)
         }
         Text(
-            "RAR needs a separate decoder, so it is planned for a later version.",
+            "Lit formats arrive with the extraction update. RAR needs a separate decoder and comes later.",
             style = MaterialTheme.typography.bodySmall,
             color = TextMuted,
             modifier = Modifier.padding(horizontal = 20.dp)
@@ -103,42 +119,72 @@ private fun Formats() {
 }
 
 @Composable
-private fun Steps() {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionTitle("How importing will work")
-        GlassCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-        ) {
-            val steps = listOf(
-                "Choose an archive from your storage",
-                "Pick where the game files are extracted",
-                "Watch progress, or cancel at any time",
-                "Review the detected executable and confirm"
-            )
-            steps.forEachIndexed { index, text ->
-                if (index > 0) Spacer(Modifier.height(14.dp))
-                StepRow(index + 1, text)
-            }
-        }
+private fun FormatKey(label: String, planned: Boolean) {
+    val shape = ChamferShape(7.dp, topLeft = true)
+    Row(
+        modifier = Modifier
+            .clip(shape)
+            .background(Graphite0.copy(alpha = 0.7f))
+            .border(1.dp, Graphite3, shape)
+            .padding(horizontal = 12.dp, vertical = 9.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        StatusLed(Lime, lit = planned)
+        Spacer(Modifier.width(8.dp))
+        Text(
+            label,
+            style = MaterialTheme.typography.labelSmall.copy(fontSize = 13.sp),
+            color = if (planned) Color.White else TextMuted
+        )
     }
 }
 
+/** A real sequence, so it is drawn as stations on a line. */
 @Composable
-private fun StepRow(number: Int, text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(30.dp)
-                .clip(CircleShape)
-                .background(NeonCyan.copy(alpha = 0.08f))
-                .border(1.dp, NeonGradient, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(number.toString(), style = MaterialTheme.typography.labelSmall, color = NeonCyan)
+private fun Steps() {
+    val steps = listOf(
+        "Choose an archive from your storage",
+        "Pick where the game files are extracted",
+        "Watch progress, or cancel at any time",
+        "Review the detected executable and confirm"
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        SectionTitle("Import steps")
+        Column(Modifier.padding(horizontal = 20.dp)) {
+            steps.forEachIndexed { index, text ->
+                val last = index == steps.lastIndex
+                Row(Modifier.height(IntrinsicSize.Min)) {
+                    Box(
+                        Modifier
+                            .width(28.dp)
+                            .fillMaxHeight()
+                            .drawBehind {
+                                val cx = 8.dp.toPx()
+                                val top = 11.dp.toPx()
+                                val half = 4.5.dp.toPx()
+                                drawRect(
+                                    Lime,
+                                    Offset(cx - half, top - half),
+                                    Size(half * 2, half * 2),
+                                    style = Stroke(1.5.dp.toPx())
+                                )
+                                if (!last) {
+                                    drawLine(
+                                        Titanium.copy(alpha = 0.35f),
+                                        Offset(cx, top + half + 3.dp.toPx()),
+                                        Offset(cx, size.height),
+                                        1.5.dp.toPx()
+                                    )
+                                }
+                            }
+                    )
+                    Text(
+                        text,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = if (last) 0.dp else 20.dp)
+                    )
+                }
+            }
         }
-        Spacer(Modifier.width(14.dp))
-        Text(text, style = MaterialTheme.typography.bodyMedium)
     }
 }

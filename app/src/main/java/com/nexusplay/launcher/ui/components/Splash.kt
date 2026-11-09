@@ -1,115 +1,74 @@
 package com.nexusplay.launcher.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.nexusplay.launcher.ui.theme.NeonCyan
-import com.nexusplay.launcher.ui.theme.NeonGradient
-import com.nexusplay.launcher.ui.theme.NeonPurple
-import com.nexusplay.launcher.ui.theme.TextPrimary
-import com.nexusplay.launcher.ui.theme.TextSecondary
+import com.nexusplay.launcher.core.DeviceInfo
+import com.nexusplay.launcher.core.DeviceInfoReader
+import com.nexusplay.launcher.ui.theme.Titanium
+import kotlinx.coroutines.delay
 
-/** Startup screen: spinning neon ring around the logo and a progress bar. Shown once per launch. */
+/** Boot screen. The three readouts are real values read from this device. */
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier) {
+fun SplashScreen(device: DeviceInfo, modifier: Modifier = Modifier) {
     val progress = remember { Animatable(0f) }
+    var lines by remember { mutableIntStateOf(0) }
+
     LaunchedEffect(Unit) {
-        progress.animateTo(1f, tween(1500, easing = FastOutSlowInEasing))
+        progress.animateTo(1f, tween(1500, easing = LinearOutSlowInEasing))
     }
-    val transition = rememberInfiniteTransition(label = "splash")
-    val spin by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(tween(2400, easing = LinearEasing), RepeatMode.Restart),
-        label = "spin"
+    LaunchedEffect(Unit) {
+        repeat(3) {
+            delay(380)
+            lines++
+        }
+    }
+
+    val readouts = listOf(
+        "Architecture" to device.primaryAbi,
+        "Memory" to DeviceInfoReader.formatGb(device.totalRamBytes),
+        "Vulkan" to if (device.hasVulkan) "Reported" else "Not reported"
     )
 
-    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Box(Modifier.size(156.dp), contentAlignment = Alignment.Center) {
-                Canvas(Modifier.fillMaxSize()) {
-                    val stroke = 4.dp.toPx()
-                    val inset = stroke
-                    rotate(spin) {
-                        drawArc(
-                            brush = Brush.sweepGradient(
-                                listOf(Color.Transparent, NeonCyan, NeonPurple, Color.Transparent)
-                            ),
-                            startAngle = 0f,
-                            sweepAngle = 360f,
-                            useCenter = false,
-                            topLeft = Offset(inset, inset),
-                            size = Size(size.width - inset * 2, size.height - inset * 2),
-                            style = Stroke(width = stroke, cap = StrokeCap.Round)
-                        )
-                    }
-                }
-                LogoMark(76.dp)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 32.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        LogoMark(64.dp)
+        Spacer(Modifier.height(20.dp))
+        Text("NexusPlay", style = MaterialTheme.typography.displaySmall)
+        Text("PC game launcher", style = MaterialTheme.typography.bodyMedium, color = Titanium)
+        Spacer(Modifier.height(36.dp))
+        SegmentBar(fraction = { progress.value })
+        Spacer(Modifier.height(18.dp))
+        readouts.forEachIndexed { index, (label, value) ->
+            AnimatedVisibility(
+                visible = lines > index,
+                enter = fadeIn(tween(200)) + expandVertically(tween(200))
+            ) {
+                Readout(label, value)
             }
-            Spacer(Modifier.height(28.dp))
-            BasicText(
-                text = "NEXUSPLAY",
-                style = TextStyle(
-                    brush = Brush.horizontalGradient(listOf(TextPrimary, NeonCyan, NeonPurple)),
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Black,
-                    letterSpacing = 7.sp
-                )
-            )
-            Spacer(Modifier.height(6.dp))
-            Text(
-                "PC game launcher",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextSecondary
-            )
-            Spacer(Modifier.height(36.dp))
-            Box(
-                Modifier
-                    .width(200.dp)
-                    .height(4.dp)
-                    .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.08f))
-                    .drawBehind {
-                        drawRect(NeonGradient, size = Size(size.width * progress.value, size.height))
-                    }
-            )
         }
     }
 }

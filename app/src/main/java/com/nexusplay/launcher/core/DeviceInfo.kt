@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
+import androidx.compose.runtime.staticCompositionLocalOf
 import java.util.Locale
 
 /** Real hardware facts used by the compatibility checks added in later stages. */
@@ -18,7 +19,16 @@ data class DeviceInfo(
     val freeStorageBytes: Long,
     val totalStorageBytes: Long,
     val hasVulkan: Boolean
-)
+) {
+    /** 0f..1f share of internal storage already in use. */
+    val storageUsedFraction: Float
+        get() = if (totalStorageBytes > 0) 1f - freeStorageBytes.toFloat() / totalStorageBytes else 0f
+}
+
+/** Read once in NexusApp and shared with every screen. */
+val LocalDeviceInfo = staticCompositionLocalOf<DeviceInfo> {
+    error("DeviceInfo was not provided")
+}
 
 object DeviceInfoReader {
 
@@ -28,7 +38,6 @@ object DeviceInfoReader {
         activityManager.getMemoryInfo(memory)
 
         val stat = StatFs(Environment.getDataDirectory().path)
-
         val manufacturer = Build.MANUFACTURER.replaceFirstChar { it.titlecase(Locale.ROOT) }
 
         return DeviceInfo(

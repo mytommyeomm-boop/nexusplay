@@ -48,7 +48,4 @@ dependencies {
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-compose:2.8.2")
-
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.json:json:20231013") // real org.json for JVM tests; Android stubs throw
 }

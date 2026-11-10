@@ -14,3 +14,4 @@ enum class Destination(val route: String, val label: String, val icon: ImageVect
 
 /** Sub-screen of Settings; not a tab. */
 const val JOYSTICK_ROUTE = "settings/joystick"
+const val RUNTIMES_ROUTE = "settings/runtimes"

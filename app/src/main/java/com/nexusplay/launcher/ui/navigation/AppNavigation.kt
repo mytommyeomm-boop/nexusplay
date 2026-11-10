@@ -25,6 +25,7 @@ import com.nexusplay.launcher.ui.screens.ImportScreen
 import com.nexusplay.launcher.ui.screens.JoystickSettingsScreen
 import com.nexusplay.launcher.ui.screens.LibraryScreen
 import com.nexusplay.launcher.ui.screens.ManagerScreen
+import com.nexusplay.launcher.ui.screens.RuntimeManagerScreen
 import com.nexusplay.launcher.ui.screens.SettingsScreen
 import com.nexusplay.launcher.ui.theme.TextPrimary
 
@@ -46,10 +47,11 @@ fun AppNavigation() {
     val currentRoute = backStackEntry?.destination?.route
 
     // The joystick screen belongs to Settings, so the Settings key stays lit while it is open.
-    val selectedRoute = if (currentRoute == JOYSTICK_ROUTE) Destination.Settings.route else currentRoute
+    val inSettingsSub = currentRoute == JOYSTICK_ROUTE || currentRoute == RUNTIMES_ROUTE
+    val selectedRoute = if (inSettingsSub) Destination.Settings.route else currentRoute
 
     val navigateTo: (Destination) -> Unit = { destination ->
-        if (destination == Destination.Settings && currentRoute == JOYSTICK_ROUTE) {
+        if (destination == Destination.Settings && inSettingsSub) {
             navController.popBackStack(Destination.Settings.route, inclusive = false)
         } else {
             navController.navigate(destination.route) {
@@ -109,9 +111,14 @@ fun AppNavigation() {
             composable(Destination.Import.route) { ImportScreen(padding) }
             composable(Destination.Manager.route) { ManagerScreen(padding, navigateTo) }
             composable(Destination.Settings.route) {
-                SettingsScreen(padding, onOpenJoystick = {
-                    navController.navigate(JOYSTICK_ROUTE) { launchSingleTop = true }
-                })
+                SettingsScreen(
+                    padding,
+                    onOpenJoystick = { navController.navigate(JOYSTICK_ROUTE) { launchSingleTop = true } },
+                    onOpenRuntimes = { navController.navigate(RUNTIMES_ROUTE) { launchSingleTop = true } }
+                )
+            }
+            composable(RUNTIMES_ROUTE) {
+                RuntimeManagerScreen(padding, onBack = { navController.popBackStack() })
             }
             composable(JOYSTICK_ROUTE) {
                 JoystickSettingsScreen(padding, onBack = { navController.popBackStack() })

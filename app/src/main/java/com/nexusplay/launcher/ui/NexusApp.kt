@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.nexusplay.launcher.core.DeviceInfoReader
+import com.nexusplay.launcher.core.LocalResumeTick
 import com.nexusplay.launcher.core.LocalDeviceInfo
 import com.nexusplay.launcher.input.JoystickSettingsHolder
 import com.nexusplay.launcher.input.LocalJoystickSettings
@@ -25,7 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 @Composable
-fun NexusApp(joystick: JoystickSettingsHolder) {
+fun NexusApp(joystick: JoystickSettingsHolder, resumeTick: Int) {
     val context = LocalContext.current
     val device = remember { DeviceInfoReader.read(context) }
 
@@ -46,7 +47,8 @@ fun NexusApp(joystick: JoystickSettingsHolder) {
 
     CompositionLocalProvider(
         LocalDeviceInfo provides device,
-        LocalJoystickSettings provides joystick
+        LocalJoystickSettings provides joystick,
+        LocalResumeTick provides resumeTick
     ) {
         DeckBackground {
             AnimatedVisibility(

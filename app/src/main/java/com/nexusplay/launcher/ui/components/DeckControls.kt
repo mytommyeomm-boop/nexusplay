@@ -24,6 +24,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -344,4 +348,37 @@ fun Field(label: String, content: @Composable () -> Unit) {
         Text(label, style = MaterialTheme.typography.titleSmall, color = Titanium)
         content()
     }
+}
+
+/** Single-line input in the deck style (no Material text field). */
+@Composable
+fun DeckTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    hint: String,
+    modifier: Modifier = Modifier
+) {
+    val shape = ChamferShape(10.dp, topLeft = true)
+    val style = MaterialTheme.typography.labelSmall.copy(fontSize = 14.sp, color = TextPrimary)
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        singleLine = true,
+        textStyle = style,
+        cursorBrush = SolidColor(Lime),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 48.dp)
+            .clip(shape)
+            .background(Graphite0)
+            .border(1.dp, Graphite3, shape)
+            .padding(horizontal = 12.dp, vertical = 14.dp),
+        decorationBox = { inner ->
+            Box {
+                if (value.isEmpty()) Text(hint, style = style.copy(color = TextMuted), maxLines = 1)
+                inner()
+            }
+        }
+    )
 }

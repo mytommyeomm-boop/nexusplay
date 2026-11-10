@@ -62,13 +62,16 @@ private val plannedPreferences = listOf(
     PreferenceEntry(NeonIcons.Cpu, "Graphics and performance", "Resolution scale, frame limit, power use"),
     PreferenceEntry(NeonIcons.Disk, "Storage", "Where games live and how much space they use"),
     PreferenceEntry(NeonIcons.Layers, "Interface", "Accent colors and layout density"),
-    PreferenceEntry(NeonIcons.Bolt, "Runtime and compatibility", "Installed runtimes and per-game profiles"),
     PreferenceEntry(NeonIcons.Backup, "Backup and restore", "Export and import your library and settings"),
     PreferenceEntry(NeonIcons.Key, "Owner mode", "App name, logo and administration")
 )
 
 @Composable
-fun SettingsScreen(contentPadding: PaddingValues, onOpenJoystick: () -> Unit) {
+fun SettingsScreen(
+    contentPadding: PaddingValues,
+    onOpenJoystick: () -> Unit,
+    onOpenRuntimes: () -> Unit
+) {
     val device = LocalDeviceInfo.current
     val context = LocalContext.current
     val version = remember { appVersion(context) }
@@ -83,6 +86,10 @@ fun SettingsScreen(contentPadding: PaddingValues, onOpenJoystick: () -> Unit) {
                     PreferenceEntry(
                         NeonIcons.Joystick, "Joystick",
                         "Sensitivity, deadzone, look and calibration", onOpenJoystick
+                    ),
+                    PreferenceEntry(
+                        NeonIcons.Bolt, "Runtimes",
+                        "Detect, select and test PC game runtimes", onOpenRuntimes
                     )
                 ) + plannedPreferences
             )

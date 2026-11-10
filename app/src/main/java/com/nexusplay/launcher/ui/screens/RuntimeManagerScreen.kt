@@ -1,5 +1,9 @@
 package com.nexusplay.launcher.ui.screens
 
+import androidx.compose.ui.res.stringResource
+import com.nexusplay.launcher.core.text
+import com.nexusplay.launcher.core.UiText
+import com.nexusplay.launcher.R
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -67,12 +71,12 @@ private fun statusColor(s: CompatStatus) = when (s) {
     CompatStatus.RuntimeMissing -> TextMuted
 }
 
-private fun statusLabel(s: CompatStatus) = when (s) {
-    CompatStatus.Compatible -> "Compatible"
-    CompatStatus.Partial -> "Partially compatible"
-    CompatStatus.Unknown -> "Unknown"
-    CompatStatus.Incompatible -> "Incompatible"
-    CompatStatus.RuntimeMissing -> "Runtime missing"
+private fun statusLabelRes(s: CompatStatus) = when (s) {
+    CompatStatus.Compatible -> R.string.rt_status_compatible
+    CompatStatus.Partial -> R.string.rt_status_partial
+    CompatStatus.Unknown -> R.string.rt_status_unknown
+    CompatStatus.Incompatible -> R.string.rt_status_incompatible
+    CompatStatus.RuntimeMissing -> R.string.rt_status_missing
 }
 
 @Composable
@@ -86,7 +90,11 @@ fun RuntimeManagerScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
     val detections: Map<String, RuntimeDetection> = remember(resumeTick, rescan) {
         RuntimeRegistry.backends.associate { b ->
             val d = b.detect(context)
-            AppLog.i("Runtime", "${b.displayName}: " + if (d.installed) "installed ${d.versionName}" else "not installed")
+            if (d.installed) {
+                AppLog.i("Runtime", UiText(R.string.log_runtime_found, b.displayName, d.versionName ?: UiText(R.string.unknown)), "detected ${b.packageName} ${d.versionName}")
+            } else {
+                AppLog.i("Runtime", UiText(R.string.log_runtime_missing, b.displayName), "${b.packageName} not installed")
+            }
             b.id to d
         }
     }
@@ -104,10 +112,10 @@ fun RuntimeManagerScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
                 .padding(horizontal = 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            KeyButton("Back", onBack, width = 64.dp)
+            KeyButton(stringResource(R.string.action_back), onBack)
             Spacer(Modifier.width(14.dp))
-            Text("Runtimes", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
-            KeyButton("Rescan", { rescan++ })
+            Text(stringResource(R.string.rt_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
+            KeyButton(stringResource(R.string.action_rescan), { rescan++ })
         }
 
         LazyColumn(
@@ -119,7 +127,7 @@ fun RuntimeManagerScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
         ) {
             item {
                 Text(
-                    "NexusPlay does not run Windows games itself. It hands them to an installed runtime, and only runtimes whose launch behavior was checked against public sources are listed.",
+                    stringResource(R.string.rt_intro),
                     style = MaterialTheme.typography.bodyMedium, color = Titanium,
                     modifier = Modifier.padding(horizontal = 20.dp)
                 )
@@ -127,7 +135,7 @@ fun RuntimeManagerScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
             if (selectedMissing) {
                 item {
                     Text(
-                        "Your selected runtime is no longer installed. Pick another one or reinstall it.",
+                        stringResource(R.string.rt_selected_missing),
                         style = MaterialTheme.typography.bodyMedium, color = Orange,
                         modifier = Modifier.padding(horizontal = 20.dp)
                     )
@@ -147,7 +155,7 @@ fun RuntimeManagerScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
             }
             item {
                 Text(
-                    "The selected runtime becomes the default for games once the library exists. Per-game overrides come with game settings.",
+                    stringResource(R.string.rt_default_note),
                     style = MaterialTheme.typography.bodySmall, color = TextMuted,
                     modifier = Modifier.padding(horizontal = 20.dp)
                 )
@@ -188,15 +196,15 @@ private fun RuntimeCard(
                 Text(backend.displayName, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                 StatusLed(color)
                 Spacer(Modifier.width(8.dp))
-                Text(statusLabel(assessment.status), style = MaterialTheme.typography.labelSmall, color = color)
+                Text(stringResource(statusLabelRes(assessment.status)), style = MaterialTheme.typography.labelSmall, color = color)
             }
-            Text(assessment.summary, style = MaterialTheme.typography.bodyMedium, color = Titanium)
+            Text(assessment.summary.text(), style = MaterialTheme.typography.bodyMedium, color = Titanium)
             if (assessment.evidence.isNotEmpty()) {
                 Column {
-                    Readout("Package", backend.packageName)
+                    Readout(stringResource(R.string.rt_package), backend.packageName)
                     assessment.evidence.forEach {
                         Readout(
-                            it.label, it.value,
+                            it.label.text(), it.value.text(),
                             valueColor = when (it.ok) { true -> Lime; false -> Orange; null -> Cyan }
                         )
                     }
@@ -206,24 +214,24 @@ private fun RuntimeCard(
             if (detection.installed) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     KeyButton(
-                        if (selected) "Selected" else "Use this runtime", onSelect,
+                        stringResource(if (selected) R.string.rt_selected else R.string.rt_use), onSelect,
                         modifier = Modifier.weight(1f), enabled = !selected, highlight = selected
                     )
                     KeyButton(
-                        "Open app", { feedback = backend.openApp(context) },
+                        stringResource(R.string.action_open_app), { feedback = backend.openApp(context) },
                         modifier = Modifier.weight(1f), enabled = caps.canOpenApp
                     )
                 }
             } else {
-                KeyButton("Open project page", { openUrl(context, backend.projectUrl) }, Modifier.fillMaxWidth())
+                KeyButton(stringResource(R.string.action_open_project), { openUrl(context, backend.projectUrl) }, Modifier.fillMaxWidth())
             }
 
             if (caps.canLaunchShortcut) {
-                Field("Test launch: exported shortcut (.desktop)") {
+                Field(stringResource(R.string.rt_test_field)) {
                     DeckTextField(path, { path = it; feedback = null }, "/storage/emulated/0/.../game.desktop")
                 }
                 DeckButton(
-                    text = "Launch shortcut",
+                    text = stringResource(R.string.rt_launch_shortcut),
                     onClick = {
                         val error = ShortcutPath.validate(path)
                         feedback = if (error != null) LaunchResult.Failed(error)
@@ -237,30 +245,30 @@ private fun RuntimeCard(
                 is LaunchResult.HandedOver -> Row(verticalAlignment = Alignment.Top) {
                     StatusLed(Lime, Modifier.padding(top = 6.dp))
                     Spacer(Modifier.width(10.dp))
-                    Text(f.detail, style = MaterialTheme.typography.bodySmall, color = Titanium)
+                    Text(f.detail.text(), style = MaterialTheme.typography.bodySmall, color = Titanium)
                 }
                 is LaunchResult.Failed -> Row(verticalAlignment = Alignment.Top) {
                     StatusLed(Orange, Modifier.padding(top = 6.dp))
                     Spacer(Modifier.width(10.dp))
-                    Text(f.reason, style = MaterialTheme.typography.bodySmall, color = Orange)
+                    Text(f.reason.text(), style = MaterialTheme.typography.bodySmall, color = Orange)
                 }
                 null -> Unit
             }
 
             KeyButton(
-                if (expanded) "Hide setup and limits" else "Setup and limits",
+                stringResource(if (expanded) R.string.rt_setup_hide else R.string.rt_setup_show),
                 { expanded = !expanded }, Modifier.fillMaxWidth()
             )
             if (expanded) {
-                Text("Setup", style = MaterialTheme.typography.titleSmall, color = Lime)
+                Text(stringResource(R.string.rt_setup_heading), style = MaterialTheme.typography.titleSmall, color = Lime)
                 backend.setupSteps.forEachIndexed { i, step ->
-                    Text("${i + 1}. $step", style = MaterialTheme.typography.bodyMedium)
+                    Text("${i + 1}. ${step.text()}", style = MaterialTheme.typography.bodyMedium)
                 }
-                Text("Limits", style = MaterialTheme.typography.titleSmall, color = Orange)
+                Text(stringResource(R.string.rt_limits_heading), style = MaterialTheme.typography.titleSmall, color = Orange)
                 backend.knownLimits.forEach {
-                    Text(it, style = MaterialTheme.typography.bodyMedium, color = Titanium)
+                    Text(it.text(), style = MaterialTheme.typography.bodyMedium, color = Titanium)
                 }
-                KeyButton("Open project page", { openUrl(context, backend.projectUrl) }, Modifier.fillMaxWidth())
+                KeyButton(stringResource(R.string.action_open_project), { openUrl(context, backend.projectUrl) }, Modifier.fillMaxWidth())
             }
         }
     }
@@ -271,7 +279,7 @@ private fun LogPanel() {
     val entries = AppLog.entries
     val format = remember { SimpleDateFormat("HH:mm:ss", Locale.US) }
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionTitle("Activity log")
+        SectionTitle(stringResource(R.string.rt_log_title))
         DeckPanel(
             modifier = Modifier
                 .fillMaxWidth()
@@ -280,11 +288,11 @@ private fun LogPanel() {
             contentPadding = PaddingValues(14.dp)
         ) {
             if (entries.isEmpty()) {
-                Text("Nothing logged yet.", style = MaterialTheme.typography.bodySmall, color = TextMuted)
+                Text(stringResource(R.string.rt_log_empty), style = MaterialTheme.typography.bodySmall, color = TextMuted)
             } else {
                 entries.takeLast(12).reversed().forEach { e ->
                     Text(
-                        "${format.format(Date(e.timeMillis))} ${e.tag}: ${e.message}",
+                        "${format.format(Date(e.timeMillis))}  ${e.message.text()}",
                         style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
                         color = if (e.level == "INFO") Titanium else Orange,
                         modifier = Modifier.padding(vertical = 2.dp)
@@ -299,6 +307,6 @@ private fun openUrl(context: android.content.Context, url: String) {
     try {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     } catch (e: Exception) {
-        AppLog.w("Runtime", "No app could open the project page")
+        AppLog.w("Runtime", UiText(R.string.log_project_page_failed), "no activity for ACTION_VIEW: $url")
     }
 }

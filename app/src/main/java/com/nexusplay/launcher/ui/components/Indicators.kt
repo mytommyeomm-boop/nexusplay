@@ -23,6 +23,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -129,7 +130,8 @@ fun Readout(
             value,
             style = MaterialTheme.typography.labelSmall.copy(fontSize = 13.sp),
             color = valueColor,
-            maxLines = 1,
+            maxLines = 3,
+            textAlign = TextAlign.End,
             overflow = TextOverflow.Ellipsis
         )
     }

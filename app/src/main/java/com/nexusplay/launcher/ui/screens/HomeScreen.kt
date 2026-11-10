@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.screens
 
+import androidx.compose.ui.res.stringResource
+import com.nexusplay.launcher.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -50,9 +52,9 @@ fun HomeScreen(contentPadding: PaddingValues, onNavigate: (Destination) -> Unit)
         item { HomeHeader(device) }
         item { HeroPlate(device) { onNavigate(Destination.Import) } }
         item { ModuleGrid(onNavigate) }
-        item { SlotShelf("Recently played", "Games you launch will fill these slots.") }
-        item { SlotShelf("Favorites", "Favorited games are pinned here.") }
-        item { SlotShelf("Recently imported", "New imports appear here first.") }
+        item { SlotShelf(stringResource(R.string.shelf_recent_title), stringResource(R.string.shelf_recent_hint)) }
+        item { SlotShelf(stringResource(R.string.shelf_favorites_title), stringResource(R.string.shelf_favorites_hint)) }
+        item { SlotShelf(stringResource(R.string.shelf_new_title), stringResource(R.string.shelf_new_hint)) }
     }
 }
 
@@ -87,21 +89,25 @@ private fun HeroPlate(device: DeviceInfo, onImport: () -> Unit) {
         screws = setOf(Corner.TopLeft, Corner.BottomRight),
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 20.dp)
     ) {
-        Text("Nothing loaded", style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.home_hero_title), style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(6.dp))
         Text(
-            "Import a game archive, confirm its executable, then launch it through a compatible runtime.",
+            stringResource(R.string.home_hero_body),
             style = MaterialTheme.typography.bodyMedium,
             color = Titanium
         )
         Spacer(Modifier.height(16.dp))
         Readout(
-            label = "Free storage",
-            value = "${DeviceInfoReader.formatGb(device.freeStorageBytes)} of ${DeviceInfoReader.formatGb(device.totalStorageBytes)}"
+            label = stringResource(R.string.home_storage_label),
+            value = stringResource(
+                R.string.home_storage_value,
+                DeviceInfoReader.formatGb(device.freeStorageBytes),
+                DeviceInfoReader.formatGb(device.totalStorageBytes)
+            )
         )
         SegmentBar(fraction = { device.storageUsedFraction }, color = Cyan)
         Spacer(Modifier.height(20.dp))
-        DeckButton(text = "Import a game", onClick = onImport, icon = NeonIcons.Import)
+        DeckButton(text = stringResource(R.string.action_import_game), onClick = onImport, icon = NeonIcons.Import)
     }
 }
 
@@ -112,13 +118,13 @@ private fun ModuleGrid(onNavigate: (Destination) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .height(184.dp),
+            .height(232.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Module(
             icon = NeonIcons.Library,
-            title = "Library",
-            caption = "Browse your games",
+            title = stringResource(R.string.nav_library),
+            caption = stringResource(R.string.home_module_library_caption),
             iconTint = Lime,
             shape = ChamferShape(22.dp, topLeft = true, bottomRight = true),
             modifier = Modifier
@@ -134,8 +140,8 @@ private fun ModuleGrid(onNavigate: (Destination) -> Unit) {
         ) {
             Module(
                 icon = NeonIcons.Folder,
-                title = "Manager",
-                caption = "Files and covers",
+                title = stringResource(R.string.nav_manager),
+                caption = stringResource(R.string.home_module_manager_caption),
                 iconTint = Titanium,
                 shape = ChamferShape(14.dp, topRight = true),
                 modifier = Modifier
@@ -144,8 +150,8 @@ private fun ModuleGrid(onNavigate: (Destination) -> Unit) {
             ) { onNavigate(Destination.Manager) }
             Module(
                 icon = NeonIcons.Sliders,
-                title = "Settings",
-                caption = "Device and runtime",
+                title = stringResource(R.string.nav_settings),
+                caption = stringResource(R.string.home_module_settings_caption),
                 iconTint = Titanium,
                 shape = ChamferShape(14.dp, bottomLeft = true),
                 modifier = Modifier

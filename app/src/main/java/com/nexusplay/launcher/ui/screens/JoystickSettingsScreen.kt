@@ -1,5 +1,9 @@
 package com.nexusplay.launcher.ui.screens
 
+import androidx.compose.ui.res.stringResource
+import com.nexusplay.launcher.core.text
+import com.nexusplay.launcher.core.UiText
+import com.nexusplay.launcher.R
 import android.os.Vibrator
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -93,8 +97,13 @@ private sealed interface CalibState {
     data object Idle : CalibState
     data class Running(val secondsLeft: Int) : CalibState
     data class Done(val gain: Float) : CalibState
-    data class Failed(val message: String) : CalibState
+    data class Failed(val message: UiText) : CalibState
 }
+
+private val DIRECTION_RES = intArrayOf(
+    R.string.dir_right, R.string.dir_up_right, R.string.dir_up, R.string.dir_up_left,
+    R.string.dir_left, R.string.dir_down_left, R.string.dir_down, R.string.dir_down_right
+)
 
 private fun f2(v: Float) = String.format(Locale.US, "%.2f", v)
 private fun signed(v: Float) = String.format(Locale.US, "%+.2f", v)
@@ -110,7 +119,7 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
 
     var out by remember { mutableStateOf(StickOutput.Zero) }
     var peak by remember { mutableFloatStateOf(0f) }
-    var centering by remember { mutableStateOf("Centering not tested yet") }
+    var centering by remember { mutableStateOf(UiText(R.string.js_status_not_tested)) }
     var calib by remember { mutableStateOf<CalibState>(CalibState.Idle) }
     var calibPeak by remember { mutableFloatStateOf(0f) }
     var confirmReset by remember { mutableStateOf(false) }
@@ -124,7 +133,7 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
             }
             val reach = calibPeak
             calib = if (reach < 0.5f) {
-                CalibState.Failed("Reach was only ${pct(reach)}. Push closer to the edge and retry.")
+                CalibState.Failed(UiText(R.string.js_calib_failed, pct(reach)))
             } else {
                 val gain = (1f / reach).coerceIn(JoystickLimits.Gain.start, JoystickLimits.Gain.endInclusive)
                 holder.update { it.copy(calibrationGain = gain) }
@@ -154,8 +163,8 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
             out = out,
             peak = peak,
             status = when (val c = calib) {
-                is CalibState.Running -> "Rotate the stick around its edge: ${c.secondsLeft}s"
-                is CalibState.Done -> "Calibrated: full output at ${pct(1f / c.gain)} reach"
+                is CalibState.Running -> UiText(R.string.js_calib_running, c.secondsLeft)
+                is CalibState.Done -> UiText(R.string.js_calib_done, pct(1f / c.gain))
                 is CalibState.Failed -> c.message
                 CalibState.Idle -> centering
             },
@@ -177,9 +186,9 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
         )
         Text(
             when (val st = bridge.status) {
-                OutputStatus.Ready -> "Game output: ${bridge.name} connected"
-                is OutputStatus.Unavailable -> "Game output: not connected. ${st.reason}"
-            },
+                OutputStatus.Ready -> UiText(R.string.js_bridge_ready, bridge.name)
+                is OutputStatus.Unavailable -> UiText(R.string.js_bridge_not_connected, st.reason)
+            }.text(),
             style = MaterialTheme.typography.bodySmall,
             color = if (bridge.status is OutputStatus.Ready) Lime else TextMuted,
             modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 8.dp)
@@ -193,125 +202,125 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             item {
-                Group("Sensitivity", ChamferShape(16.dp, topLeft = true)) {
-                    SliderRow("Overall", "${f2(s.sensitivity)}x", s.sensitivity, JoystickLimits.Sensitivity,
+                Group(stringResource(R.string.group_sensitivity), ChamferShape(16.dp, topLeft = true)) {
+                    SliderRow(stringResource(R.string.js_sens_overall), "${f2(s.sensitivity)}x", s.sensitivity, JoystickLimits.Sensitivity,
                         { v -> holder.update { it.copy(sensitivity = v) } }, step = 0.01f)
-                    SliderRow("X axis", "${f2(s.sensitivityX)}x", s.sensitivityX, JoystickLimits.Sensitivity,
+                    SliderRow(stringResource(R.string.js_sens_x), "${f2(s.sensitivityX)}x", s.sensitivityX, JoystickLimits.Sensitivity,
                         { v -> holder.update { it.copy(sensitivityX = v) } }, step = 0.01f)
-                    SliderRow("Y axis", "${f2(s.sensitivityY)}x", s.sensitivityY, JoystickLimits.Sensitivity,
+                    SliderRow(stringResource(R.string.js_sens_y), "${f2(s.sensitivityY)}x", s.sensitivityY, JoystickLimits.Sensitivity,
                         { v -> holder.update { it.copy(sensitivityY = v) } }, step = 0.01f)
                 }
             }
             item {
-                Group("Deadzone", ChamferShape(16.dp, topRight = true)) {
-                    SliderRow("Inner deadzone", pct(s.deadzone), s.deadzone, JoystickLimits.Deadzone,
+                Group(stringResource(R.string.group_deadzone), ChamferShape(16.dp, topRight = true)) {
+                    SliderRow(stringResource(R.string.js_deadzone_inner), pct(s.deadzone), s.deadzone, JoystickLimits.Deadzone,
                         { v -> holder.update { it.copy(deadzone = v) } }, step = 0.01f)
                     Text(
-                        "Movement inside the dashed circle produces no output, which filters out resting-thumb jitter and accidental touches.",
+                        stringResource(R.string.js_deadzone_note),
                         style = MaterialTheme.typography.bodySmall, color = Titanium
                     )
                 }
             }
             item {
-                Group("Size and position", ChamferShape(16.dp, bottomRight = true)) {
-                    SliderRow("Size", "${s.sizeDp.roundToInt()} dp", s.sizeDp, JoystickLimits.Size,
+                Group(stringResource(R.string.group_size_position), ChamferShape(16.dp, bottomRight = true)) {
+                    SliderRow(stringResource(R.string.js_size), "${s.sizeDp.roundToInt()} dp", s.sizeDp, JoystickLimits.Size,
                         { v -> holder.update { it.copy(sizeDp = v) } }, step = 1f)
-                    SliderRow("Movement radius", pct(s.travel), s.travel, JoystickLimits.Travel,
+                    SliderRow(stringResource(R.string.js_travel), pct(s.travel), s.travel, JoystickLimits.Travel,
                         { v -> holder.update { it.copy(travel = v) } }, step = 0.01f)
-                    Field("Mode") {
-                        DeckSegmented(listOf("Fixed", "Floating"), s.mode.ordinal) { i ->
+                    Field(stringResource(R.string.js_mode)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_mode_fixed), stringResource(R.string.js_mode_floating)), s.mode.ordinal) { i ->
                             holder.update { it.copy(mode = StickMode.entries[i]) }
                         }
                     }
-                    Field("Side") {
-                        DeckSegmented(listOf("Left", "Right"), s.side.ordinal) { i ->
+                    Field(stringResource(R.string.js_side)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_side_left), stringResource(R.string.js_side_right)), s.side.ordinal) { i ->
                             holder.update { it.copy(side = StickSide.entries[i], positionX = if (i == 0) 0.18f else 0.82f) }
                         }
                     }
-                    Field("Position on the gaming screen") {
+                    Field(stringResource(R.string.js_position)) {
                         PositionPad(s) { x, y -> holder.update { it.copy(positionX = x, positionY = y) } }
                     }
                     Text(
-                        "Drag the stick to place it. The position is saved now and is applied by Gaming Mode in the next stage.",
+                        stringResource(R.string.js_position_note),
                         style = MaterialTheme.typography.bodySmall, color = Titanium
                     )
                 }
             }
             item {
-                Group("Movement", ChamferShape(16.dp, bottomLeft = true)) {
-                    Field("Response") {
-                        DeckSegmented(listOf("Responsive", "Smooth"), s.response.ordinal) { i ->
+                Group(stringResource(R.string.group_movement), ChamferShape(16.dp, bottomLeft = true)) {
+                    Field(stringResource(R.string.js_response)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_response_responsive), stringResource(R.string.js_response_smooth)), s.response.ordinal) { i ->
                             holder.update { it.copy(response = ResponseMode.entries[i]) }
                         }
                     }
-                    Field("Response curve") {
-                        DeckSegmented(listOf("Linear", "Exponential"), s.curve.ordinal) { i ->
+                    Field(stringResource(R.string.js_curve)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_curve_linear), stringResource(R.string.js_curve_exponential)), s.curve.ordinal) { i ->
                             holder.update { it.copy(curve = ResponseCurve.entries[i]) }
                         }
                     }
                     if (s.curve == ResponseCurve.Exponential) {
-                        SliderRow("Curve strength", f2(s.curveExponent), s.curveExponent, JoystickLimits.Exponent,
+                        SliderRow(stringResource(R.string.js_curve_strength), f2(s.curveExponent), s.curveExponent, JoystickLimits.Exponent,
                             { v -> holder.update { it.copy(curveExponent = v) } }, step = 0.05f)
                     }
                     CurvePlot(s)
-                    ToggleRow("Invert X axis", s.invertX, { v -> holder.update { it.copy(invertX = v) } })
-                    ToggleRow("Invert Y axis", s.invertY, { v -> holder.update { it.copy(invertY = v) } })
-                    Field("When released") {
-                        DeckSegmented(listOf("Spring", "Soft", "Snap", "Hold"), s.returnMode.ordinal) { i ->
+                    ToggleRow(stringResource(R.string.js_invert_x), s.invertX, { v -> holder.update { it.copy(invertX = v) } })
+                    ToggleRow(stringResource(R.string.js_invert_y), s.invertY, { v -> holder.update { it.copy(invertY = v) } })
+                    Field(stringResource(R.string.js_return)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_return_spring), stringResource(R.string.js_return_soft), stringResource(R.string.js_return_snap), stringResource(R.string.js_return_hold)), s.returnMode.ordinal) { i ->
                             holder.update { it.copy(returnMode = ReturnMode.entries[i]) }
                         }
                     }
                 }
             }
             item {
-                Group("Appearance", ChamferShape(16.dp, topLeft = true)) {
-                    Field("Style") {
-                        DeckSegmented(listOf("Metallic", "Minimal", "Futuristic"), s.style.ordinal) { i ->
+                Group(stringResource(R.string.group_appearance), ChamferShape(16.dp, topLeft = true)) {
+                    Field(stringResource(R.string.js_style)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_style_metallic), stringResource(R.string.js_style_minimal), stringResource(R.string.js_style_futuristic)), s.style.ordinal) { i ->
                             holder.update { it.copy(style = StickStyle.entries[i]) }
                         }
                     }
-                    Field("Ring markings") {
-                        DeckSegmented(listOf("Plain", "Ticked", "Segmented"), s.ring.ordinal) { i ->
+                    Field(stringResource(R.string.js_ring)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_ring_plain), stringResource(R.string.js_ring_ticked), stringResource(R.string.js_ring_segmented)), s.ring.ordinal) { i ->
                             holder.update { it.copy(ring = RingDesign.entries[i]) }
                         }
                     }
-                    Field("Center cap") {
-                        DeckSegmented(listOf("Dome", "Flat", "Ringed"), s.cap.ordinal) { i ->
+                    Field(stringResource(R.string.js_cap)) {
+                        DeckSegmented(listOf(stringResource(R.string.js_cap_dome), stringResource(R.string.js_cap_flat), stringResource(R.string.js_cap_ringed)), s.cap.ordinal) { i ->
                             holder.update { it.copy(cap = CapDesign.entries[i]) }
                         }
                     }
-                    SliderRow("Opacity", pct(s.opacity), s.opacity, JoystickLimits.Opacity,
+                    SliderRow(stringResource(R.string.js_opacity), pct(s.opacity), s.opacity, JoystickLimits.Opacity,
                         { v -> holder.update { it.copy(opacity = v) } }, step = 0.01f)
-                    SliderRow("Lighting", pct(s.lighting), s.lighting, JoystickLimits.Lighting,
+                    SliderRow(stringResource(R.string.js_lighting), pct(s.lighting), s.lighting, JoystickLimits.Lighting,
                         { v -> holder.update { it.copy(lighting = v) } }, step = 0.01f)
-                    Field("Accent color") {
+                    Field(stringResource(R.string.js_accent)) {
                         Swatches(s.accentHue) { h -> holder.update { it.copy(accentHue = h) } }
                         DeckSlider(s.accentHue, { h -> holder.update { it.copy(accentHue = h) } }, JoystickLimits.Hue)
                     }
                 }
             }
             item {
-                Group("Feedback and calibration", ChamferShape(16.dp, topRight = true)) {
+                Group(stringResource(R.string.group_feedback), ChamferShape(16.dp, topRight = true)) {
                     ToggleRow(
-                        "Vibration", s.haptics && hasVibrator, { v -> holder.update { it.copy(haptics = v) } },
-                        caption = if (hasVibrator) "A tick when you touch and when you reach the edge" else "This device reports no vibrator",
+                        stringResource(R.string.js_haptics), s.haptics && hasVibrator, { v -> holder.update { it.copy(haptics = v) } },
+                        caption = stringResource(if (hasVibrator) R.string.js_haptics_caption else R.string.js_haptics_none),
                         enabled = hasVibrator
                     )
                     ToggleRow(
-                        "Touch feedback", s.touchFeedback, { v -> holder.update { it.copy(touchFeedback = v) } },
-                        caption = "Knob presses in and lights its rim while touched"
+                        stringResource(R.string.js_touch_feedback), s.touchFeedback, { v -> holder.update { it.copy(touchFeedback = v) } },
+                        caption = stringResource(R.string.js_touch_caption)
                     )
                     Text(
-                        "Calibration gain: ${f2(s.calibrationGain)}x. Use Calibrate above the stick.",
+                        stringResource(R.string.js_gain_note, f2(s.calibrationGain)),
                         style = MaterialTheme.typography.bodySmall, color = Titanium
                     )
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         KeyButton(
-                            "Restore previous", { holder.replace(sessionStart) },
+                            stringResource(R.string.js_restore_previous), { holder.replace(sessionStart) },
                             modifier = Modifier.weight(1f), enabled = s != sessionStart
                         )
                         KeyButton(
-                            if (confirmReset) "Tap again to confirm" else "Reset to default",
+                            stringResource(if (confirmReset) R.string.js_reset_confirm else R.string.js_reset_default),
                             {
                                 if (confirmReset) {
                                     holder.replace(JoystickSettings())
@@ -328,10 +337,10 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
     }
 }
 
-private fun describeCentering(o: StickOutput, mode: ReturnMode): String = when {
-    mode == ReturnMode.Hold -> "Held at X ${signed(o.x)}  Y ${signed(o.y)}"
-    abs(o.x) < 0.001f && abs(o.y) < 0.001f -> "Returned to center: 0.00, 0.00"
-    else -> "Off-center after release: ${signed(o.x)}, ${signed(o.y)}"
+private fun describeCentering(o: StickOutput, mode: ReturnMode): UiText = when {
+    mode == ReturnMode.Hold -> UiText(R.string.js_status_held, signed(o.x), signed(o.y))
+    abs(o.x) < 0.001f && abs(o.y) < 0.001f -> UiText(R.string.js_status_centered)
+    else -> UiText(R.string.js_status_off_center, signed(o.x), signed(o.y))
 }
 
 @Composable
@@ -342,13 +351,13 @@ private fun TopBar(saveFailed: Boolean, onBack: () -> Unit) {
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        KeyButton("Back", onBack, width = 64.dp)
+        KeyButton(stringResource(R.string.action_back), onBack)
         Spacer(Modifier.width(14.dp))
-        Text("Joystick", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
+        Text(stringResource(R.string.js_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
         StatusLed(if (saveFailed) Orange else Lime)
         Spacer(Modifier.width(8.dp))
         Text(
-            if (saveFailed) "Save failed" else "Auto-saved",
+            stringResource(if (saveFailed) R.string.js_save_failed else R.string.js_saved),
             style = MaterialTheme.typography.labelSmall,
             color = if (saveFailed) Orange else Cyan
         )
@@ -360,7 +369,7 @@ private fun TestPlate(
     s: JoystickSettings,
     out: StickOutput,
     peak: Float,
-    status: String,
+    status: UiText,
     statusWarn: Boolean,
     calibrating: Boolean,
     onOutput: (StickOutput) -> Unit,
@@ -383,7 +392,7 @@ private fun TestPlate(
                 Text("X ${signed(out.x)}", style = mono, color = Cyan)
                 Text("Y ${signed(out.y)}", style = mono, color = Cyan)
                 Text(
-                    if (out.active) "${out.angleDeg.roundToInt()}\u00B0 ${JoystickMath.compass(out.angleDeg)}" else "idle",
+                    if (out.active) "${out.angleDeg.roundToInt()}\u00B0 ${stringResource(DIRECTION_RES[JoystickMath.compassIndex(out.angleDeg)])}" else stringResource(R.string.js_idle),
                     style = mono, color = Titanium
                 )
             }
@@ -397,7 +406,7 @@ private fun TestPlate(
                 StatusLed(if (statusWarn) Orange else Lime, pulse = calibrating)
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    status,
+                    status.text(),
                     style = MaterialTheme.typography.bodySmall,
                     color = if (statusWarn) Orange else Titanium,
                     maxLines = 2,
@@ -406,9 +415,9 @@ private fun TestPlate(
             }
             Spacer(Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyButton("Peak ${f2(peak)}", onResetPeak, modifier = Modifier.weight(1f))
-                KeyButton("Reset cal", onResetCalibration, modifier = Modifier.weight(1f), enabled = s.calibrationGain != 1f)
-                KeyButton("Calibrate", onCalibrate, modifier = Modifier.weight(1f), enabled = !calibrating, highlight = calibrating)
+                KeyButton(stringResource(R.string.js_key_peak, f2(peak)), onResetPeak, modifier = Modifier.weight(1f))
+                KeyButton(stringResource(R.string.js_key_reset_cal), onResetCalibration, modifier = Modifier.weight(1f), enabled = s.calibrationGain != 1f)
+                KeyButton(stringResource(R.string.js_key_calibrate), onCalibrate, modifier = Modifier.weight(1f), enabled = !calibrating, highlight = calibrating)
             }
         }
     }
@@ -514,9 +523,9 @@ private fun PositionPad(s: JoystickSettings, onMove: (Float, Float) -> Unit) {
 
 @Composable
 private fun Swatches(hue: Float, onPick: (Float) -> Unit) {
-    val presets = listOf(72f to "Lime", 187f to "Cyan", 24f to "Orange", 2f to "Red")
+    val presets = listOf(72f, 187f, 24f, 2f)
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        presets.forEach { (h, name) ->
+        presets.forEach { h ->
             val on = abs(hue - h) < 1f
             val shape = ChamferShape(8.dp, topLeft = true, bottomRight = true)
             val interaction = remember { MutableInteractionSource() }

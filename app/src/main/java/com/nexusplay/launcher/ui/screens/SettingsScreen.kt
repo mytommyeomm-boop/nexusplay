@@ -1,6 +1,7 @@
 package com.nexusplay.launcher.ui.screens
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -25,8 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.nexusplay.launcher.R
 import com.nexusplay.launcher.core.DeviceInfo
 import com.nexusplay.launcher.core.DeviceInfoReader
 import com.nexusplay.launcher.core.LocalDeviceInfo
@@ -49,21 +52,21 @@ import com.nexusplay.launcher.ui.theme.Titanium
 @Suppress("DEPRECATION")
 private fun appVersion(context: Context): String =
     runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }
-        .getOrNull() ?: "unknown"
+        .getOrNull() ?: context.getString(R.string.unknown)
 
 private data class PreferenceEntry(
     val icon: ImageVector,
-    val title: String,
-    val subtitle: String,
+    @StringRes val titleRes: Int,
+    @StringRes val subtitleRes: Int,
     val onClick: (() -> Unit)? = null
 )
 
 private val plannedPreferences = listOf(
-    PreferenceEntry(NeonIcons.Cpu, "Graphics and performance", "Resolution scale, frame limit, power use"),
-    PreferenceEntry(NeonIcons.Disk, "Storage", "Where games live and how much space they use"),
-    PreferenceEntry(NeonIcons.Layers, "Interface", "Accent colors and layout density"),
-    PreferenceEntry(NeonIcons.Backup, "Backup and restore", "Export and import your library and settings"),
-    PreferenceEntry(NeonIcons.Key, "Owner mode", "App name, logo and administration")
+    PreferenceEntry(NeonIcons.Cpu, R.string.pref_graphics_title, R.string.pref_graphics_subtitle),
+    PreferenceEntry(NeonIcons.Disk, R.string.pref_storage_title, R.string.pref_storage_subtitle),
+    PreferenceEntry(NeonIcons.Layers, R.string.pref_interface_title, R.string.pref_interface_subtitle),
+    PreferenceEntry(NeonIcons.Backup, R.string.pref_backup_title, R.string.pref_backup_subtitle),
+    PreferenceEntry(NeonIcons.Key, R.string.pref_owner_title, R.string.pref_owner_subtitle)
 )
 
 @Composable
@@ -77,20 +80,20 @@ fun SettingsScreen(
     val version = remember { appVersion(context) }
 
     ScreenList(contentPadding) {
-        item { ScreenHeader("Settings", "Device facts and app preferences", readout = "v$version") }
+        item {
+            ScreenHeader(
+                stringResource(R.string.settings_title),
+                stringResource(R.string.settings_subtitle),
+                readout = "v$version"
+            )
+        }
         item { DevicePanel(device) }
-        item { SectionTitle("Preferences") }
+        item { SectionTitle(stringResource(R.string.settings_prefs_title)) }
         item {
             PreferencePanel(
                 listOf(
-                    PreferenceEntry(
-                        NeonIcons.Joystick, "Joystick",
-                        "Sensitivity, deadzone, look and calibration", onOpenJoystick
-                    ),
-                    PreferenceEntry(
-                        NeonIcons.Bolt, "Runtimes",
-                        "Detect, select and test PC game runtimes", onOpenRuntimes
-                    )
+                    PreferenceEntry(NeonIcons.Joystick, R.string.pref_joystick_title, R.string.pref_joystick_subtitle, onOpenJoystick),
+                    PreferenceEntry(NeonIcons.Bolt, R.string.pref_runtimes_title, R.string.pref_runtimes_subtitle, onOpenRuntimes)
                 ) + plannedPreferences
             )
         }
@@ -107,24 +110,35 @@ private fun DevicePanel(info: DeviceInfo) {
         contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 18.dp, bottom = 16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("This device", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            Text(
+                stringResource(R.string.settings_device_title),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f)
+            )
             StatusLed(if (info.is64BitArm) Lime else Orange)
             Spacer(Modifier.width(8.dp))
             Text(
-                if (info.is64BitArm) "ARM64" else "Not ARM64",
+                if (info.is64BitArm) "ARM64" else stringResource(R.string.settings_not_arm64),
                 style = MaterialTheme.typography.labelSmall,
                 color = if (info.is64BitArm) Lime else Orange
             )
         }
         Spacer(Modifier.height(8.dp))
-        Readout("Device", info.model)
-        Readout("System", info.androidVersion)
-        Readout("CPU", info.primaryAbi)
-        Readout("Memory", DeviceInfoReader.formatGb(info.totalRamBytes))
-        Readout("Vulkan", if (info.hasVulkan) "Reported by device" else "Not reported")
+        Readout(stringResource(R.string.settings_row_device), info.model)
+        Readout(stringResource(R.string.settings_row_system), info.androidVersion)
+        Readout(stringResource(R.string.settings_row_cpu), info.primaryAbi)
+        Readout(stringResource(R.string.settings_row_memory), DeviceInfoReader.formatGb(info.totalRamBytes))
         Readout(
-            "Free storage",
-            "${DeviceInfoReader.formatGb(info.freeStorageBytes)} of ${DeviceInfoReader.formatGb(info.totalStorageBytes)}",
+            stringResource(R.string.vulkan_label),
+            stringResource(if (info.hasVulkan) R.string.settings_vulkan_yes else R.string.settings_vulkan_no)
+        )
+        Readout(
+            stringResource(R.string.settings_row_free_storage),
+            stringResource(
+                R.string.home_storage_value,
+                DeviceInfoReader.formatGb(info.freeStorageBytes),
+                DeviceInfoReader.formatGb(info.totalStorageBytes)
+            ),
             valueColor = Cyan
         )
         Spacer(Modifier.height(6.dp))
@@ -187,15 +201,15 @@ private fun PreferenceRow(entry: PreferenceEntry) {
         }
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
-            Text(entry.title, style = MaterialTheme.typography.titleSmall)
-            Text(entry.subtitle, style = MaterialTheme.typography.bodySmall, color = Titanium)
+            Text(stringResource(entry.titleRes), style = MaterialTheme.typography.titleSmall)
+            Text(stringResource(entry.subtitleRes), style = MaterialTheme.typography.bodySmall, color = Titanium)
         }
         Spacer(Modifier.width(10.dp))
         val live = entry.onClick != null
         StatusLed(Lime, lit = live)
         Spacer(Modifier.width(6.dp))
         Text(
-            if (live) "open" else "soon",
+            stringResource(if (live) R.string.pref_tag_open else R.string.pref_tag_soon),
             style = MaterialTheme.typography.labelSmall,
             color = if (live) Lime else TextMuted
         )

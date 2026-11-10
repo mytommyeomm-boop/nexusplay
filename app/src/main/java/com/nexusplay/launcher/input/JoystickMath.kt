@@ -70,9 +70,6 @@ object JoystickMath {
         return StickOutput(ox, oy, ix, iy, min(1f, hypot(ox, oy)), angle, raw, true)
     }
 
-    private val compassLabels = arrayOf("E", "NE", "N", "NW", "W", "SW", "S", "SE")
-
-    /** 8-way label for an angle in degrees (0 = right, counter-clockwise). */
-    fun compass(angleDeg: Float): String =
-        compassLabels[((angleDeg + 22.5f) / 45f).toInt() % 8]
+    /** 8-way direction index for an angle in degrees: 0 = right, then counter-clockwise in 45 degree steps. */
+    fun compassIndex(angleDeg: Float): Int = ((angleDeg + 22.5f) / 45f).toInt() % 8
 }

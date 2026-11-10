@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.screens
 
+import androidx.compose.ui.res.stringResource
+import com.nexusplay.launcher.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,7 +50,7 @@ import com.nexusplay.launcher.ui.theme.Titanium
 @Composable
 fun ImportScreen(contentPadding: PaddingValues) {
     ScreenList(contentPadding) {
-        item { ScreenHeader("Import", "Bring a game archive into your library") }
+        item { ScreenHeader(stringResource(R.string.import_title), stringResource(R.string.import_subtitle)) }
         item { IntakePlate() }
         item { Formats() }
         item { Steps() }
@@ -73,22 +75,22 @@ private fun IntakePlate() {
             pins = true
         )
         Spacer(Modifier.height(16.dp))
-        Text("Select a game archive", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.import_intake_title), style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(6.dp))
         Text(
-            "Choose a ZIP, 7Z or TAR file from your phone. Nothing is run during import.",
+            stringResource(R.string.import_intake_body),
             style = MaterialTheme.typography.bodyMedium,
             color = Titanium
         )
         Spacer(Modifier.height(18.dp))
         // Disabled on purpose: the file picker and extractor are not built yet.
-        DeckButton(text = "Choose file", onClick = {}, icon = NeonIcons.Folder, enabled = false)
+        DeckButton(text = stringResource(R.string.import_choose_file), onClick = {}, icon = NeonIcons.Folder, enabled = false)
         Spacer(Modifier.height(12.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             StatusLed(Orange)
             Spacer(Modifier.width(10.dp))
             Text(
-                "The file picker is not built yet. It arrives with the extraction update.",
+                stringResource(R.string.import_picker_note),
                 style = MaterialTheme.typography.bodySmall,
                 color = TextMuted
             )
@@ -99,7 +101,7 @@ private fun IntakePlate() {
 @Composable
 private fun Formats() {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        SectionTitle("Formats")
+        SectionTitle(stringResource(R.string.import_formats_title))
         Row(
             modifier = Modifier.padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -110,7 +112,7 @@ private fun Formats() {
             FormatKey("RAR", planned = false)
         }
         Text(
-            "Lit formats arrive with the extraction update. RAR needs a separate decoder and comes later.",
+            stringResource(R.string.import_formats_note),
             style = MaterialTheme.typography.bodySmall,
             color = TextMuted,
             modifier = Modifier.padding(horizontal = 20.dp)
@@ -143,13 +145,13 @@ private fun FormatKey(label: String, planned: Boolean) {
 @Composable
 private fun Steps() {
     val steps = listOf(
-        "Choose an archive from your storage",
-        "Pick where the game files are extracted",
-        "Watch progress, or cancel at any time",
-        "Review the detected executable and confirm"
+        stringResource(R.string.import_step_1),
+        stringResource(R.string.import_step_2),
+        stringResource(R.string.import_step_3),
+        stringResource(R.string.import_step_4)
     )
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        SectionTitle("Import steps")
+        SectionTitle(stringResource(R.string.import_steps_title))
         Column(Modifier.padding(horizontal = 20.dp)) {
             steps.forEachIndexed { index, text ->
                 val last = index == steps.lastIndex

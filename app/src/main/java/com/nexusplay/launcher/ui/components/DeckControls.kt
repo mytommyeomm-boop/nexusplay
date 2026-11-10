@@ -1,5 +1,8 @@
 package com.nexusplay.launcher.ui.components
 
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -166,7 +169,7 @@ fun KeyButton(
     Box(
         modifier = modifier
             .then(if (width != null) Modifier.width(width) else Modifier.widthIn(min = 44.dp))
-            .height(44.dp)
+            .heightIn(min = 44.dp)
             .graphicsLayer { translationY = travel * 2.dp.toPx() }
             .clip(shape)
             .background(Brush.verticalGradient(listOf(Graphite3, Graphite2)))
@@ -200,14 +203,15 @@ fun KeyButton(
                     down = false
                 })
             }
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 12.dp, vertical = 4.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             label,
             style = MaterialTheme.typography.titleSmall,
             color = if (enabled) TextPrimary else TextMuted,
-            maxLines = 1
+            maxLines = 2,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -301,7 +305,8 @@ fun DeckSegmented(
     Row(
         modifier
             .fillMaxWidth()
-            .height(46.dp)
+            .defaultMinSize(minHeight = 46.dp)
+            .height(IntrinsicSize.Min)
             .clip(shape)
             .background(Graphite0)
             .border(1.dp, Graphite3, shape)
@@ -334,7 +339,9 @@ fun DeckSegmented(
                     label,
                     style = MaterialTheme.typography.titleSmall,
                     color = if (on) Lime else Titanium,
-                    maxLines = 1
+                    maxLines = 2,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 6.dp)
                 )
             }
         }

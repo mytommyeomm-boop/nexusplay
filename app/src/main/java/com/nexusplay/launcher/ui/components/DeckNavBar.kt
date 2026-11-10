@@ -34,6 +34,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -160,7 +161,7 @@ private fun DeckNavKey(
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = destination.label,
+            text = stringResource(destination.labelRes),
             style = MaterialTheme.typography.titleSmall.copy(fontSize = 12.sp),
             color = tint,
             maxLines = 1,

@@ -2,6 +2,8 @@ package com.nexusplay.launcher.ui.screens
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.nexusplay.launcher.R
 import com.nexusplay.launcher.ui.components.EmptyState
 import com.nexusplay.launcher.ui.components.NeonIcons
 import com.nexusplay.launcher.ui.components.ScreenHeader
@@ -11,13 +13,13 @@ import com.nexusplay.launcher.ui.navigation.Destination
 @Composable
 fun ManagerScreen(contentPadding: PaddingValues, onNavigate: (Destination) -> Unit) {
     ScreenList(contentPadding) {
-        item { ScreenHeader("Manager", "Rename, re-cover and organize games") }
+        item { ScreenHeader(stringResource(R.string.manager_title), stringResource(R.string.manager_subtitle)) }
         item {
             EmptyState(
                 icon = NeonIcons.Folder,
-                title = "Nothing to manage yet",
-                message = "Once you import a game you can rename it, change its cover and manage its folders here.",
-                actionLabel = "Import a game",
+                title = stringResource(R.string.manager_empty_title),
+                message = stringResource(R.string.manager_empty_message),
+                actionLabel = stringResource(R.string.action_import_game),
                 onAction = { onNavigate(Destination.Import) }
             )
         }

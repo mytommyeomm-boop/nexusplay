@@ -1,11 +1,12 @@
 package com.nexusplay.launcher.runtime
 
 import android.content.Context
+import com.nexusplay.launcher.core.UiText
 
 enum class CompatStatus { Compatible, Partial, Unknown, Incompatible, RuntimeMissing }
 
 /** One fact shown to the user. [ok] is true/false when it is a pass/fail check, null when informational. */
-data class Evidence(val label: String, val value: String, val ok: Boolean?)
+data class Evidence(val label: UiText, val value: UiText, val ok: Boolean?)
 
 data class RuntimeDetection(
     val installed: Boolean,
@@ -29,12 +30,12 @@ data class RuntimeCapabilities(
     val acceptsExternalInput: Boolean
 )
 
-data class RuntimeAssessment(val status: CompatStatus, val summary: String, val evidence: List<Evidence>)
+data class RuntimeAssessment(val status: CompatStatus, val summary: UiText, val evidence: List<Evidence>)
 
 sealed interface LaunchResult {
     /** Android accepted the intent. This does NOT prove a game is running. */
-    data class HandedOver(val detail: String) : LaunchResult
-    data class Failed(val reason: String) : LaunchResult
+    data class HandedOver(val detail: UiText) : LaunchResult
+    data class Failed(val reason: UiText) : LaunchResult
 }
 
 /** A compatibility runtime NexusPlay can detect and hand games to. */
@@ -43,8 +44,8 @@ interface RuntimeBackend {
     val displayName: String
     val packageName: String
     val projectUrl: String
-    val setupSteps: List<String>
-    val knownLimits: List<String>
+    val setupSteps: List<UiText>
+    val knownLimits: List<UiText>
 
     fun detect(context: Context): RuntimeDetection
     fun openApp(context: Context): LaunchResult

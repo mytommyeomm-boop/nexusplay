@@ -60,11 +60,11 @@ class JoystickMathTest {
         assertEquals(1f, JoystickMath.compute(0.8f, 0f, s).x, eps)
     }
 
-    @Test fun compassLabels() {
-        assertEquals("E", JoystickMath.compass(0f))
-        assertEquals("N", JoystickMath.compass(90f))
-        assertEquals("SW", JoystickMath.compass(225f))
-        assertEquals("E", JoystickMath.compass(359f))
+    @Test fun directionIndex() {
+        assertEquals(0, JoystickMath.compassIndex(0f))     // right
+        assertEquals(2, JoystickMath.compassIndex(90f))    // up
+        assertEquals(5, JoystickMath.compassIndex(225f))   // down-left
+        assertEquals(0, JoystickMath.compassIndex(359f))   // wraps back to right
     }
 
     @Test fun sanitizeFixesBadValues() {

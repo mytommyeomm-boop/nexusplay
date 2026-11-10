@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.nexusplay.launcher.R
+import com.nexusplay.launcher.core.UiText
 
 /** Only runtimes whose package and launch entry were checked against public sources are listed. */
 object RuntimeRegistry {
@@ -13,19 +15,14 @@ object RuntimeRegistry {
             displayName = "Winlator Cmod",
             packageName = "com.winlator.cmod",
             entryClass = "com.winlator.cmod.XServerDisplayActivity",
-            projectUrl = "https://github.com/coffincolors/winlator",
+            projectUrl = "https://github.com/coffincolors/winlator/releases",
             setupSteps = listOf(
-                "Download the APK from the Releases page of the Winlator Cmod project and install it.",
-                "Open Winlator once and wait for its first-time setup to finish.",
-                "Create a container, then create a shortcut for your game inside Winlator.",
-                "Use Winlator's frontend export on that shortcut to save a .desktop file to shared storage.",
-                "Come back here, paste that file's path into the test field and launch it."
+                UiText(R.string.cmod_step_1), UiText(R.string.cmod_step_2), UiText(R.string.cmod_step_3),
+                UiText(R.string.cmod_step_4), UiText(R.string.cmod_step_5)
             ),
             knownLimits = listOf(
-                "NexusPlay cannot create shortcuts. They must be made inside Winlator first.",
-                "Android returns no result from the runtime, so NexusPlay cannot tell whether the game started or when it exits.",
-                "Cmod has its own touch controls and controller support. NexusPlay's virtual gamepad cannot send input into it.",
-                "The launch method comes from public sources and has not been confirmed on your device. The test field is how you confirm it."
+                UiText(R.string.cmod_limit_1), UiText(R.string.cmod_limit_2),
+                UiText(R.string.cmod_limit_3), UiText(R.string.cmod_limit_4)
             )
         ),
         WinlatorBackend(
@@ -33,17 +30,13 @@ object RuntimeRegistry {
             displayName = "Winlator (com.winlator)",
             packageName = "com.winlator",
             entryClass = "com.winlator.XServerDisplayActivity",
-            projectUrl = "https://github.com/brunodev85/winlator",
+            projectUrl = "https://github.com/brunodev85/winlator/releases",
             setupSteps = listOf(
-                "Download the APK from the Releases page of the Winlator project and install it.",
-                "Open Winlator once and wait for its first-time setup to finish.",
-                "Create a container and add your game as a shortcut inside Winlator.",
-                "Start the game from Winlator's home screen shortcut."
+                UiText(R.string.official_step_1), UiText(R.string.official_step_2),
+                UiText(R.string.official_step_3), UiText(R.string.official_step_4)
             ),
             knownLimits = listOf(
-                "Official Winlator keeps its game screen private, so NexusPlay can open the app but cannot start a game in it.",
-                "Some older Winlator Cmod builds also use the package name com.winlator. Whether a build accepts launches is read from your device, not assumed.",
-                "NexusPlay cannot send controller input into Winlator."
+                UiText(R.string.official_limit_1), UiText(R.string.official_limit_2), UiText(R.string.official_limit_3)
             )
         )
     )

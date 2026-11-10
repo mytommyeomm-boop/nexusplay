@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.components
 
+import androidx.compose.ui.res.stringResource
+import com.nexusplay.launcher.R
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -44,9 +46,9 @@ fun SplashScreen(device: DeviceInfo, modifier: Modifier = Modifier) {
     }
 
     val readouts = listOf(
-        "Architecture" to device.primaryAbi,
-        "Memory" to DeviceInfoReader.formatGb(device.totalRamBytes),
-        "Vulkan" to if (device.hasVulkan) "Reported" else "Not reported"
+        stringResource(R.string.splash_architecture) to device.primaryAbi,
+        stringResource(R.string.splash_memory) to DeviceInfoReader.formatGb(device.totalRamBytes),
+        stringResource(R.string.vulkan_label) to stringResource(if (device.hasVulkan) R.string.vulkan_yes else R.string.vulkan_no)
     )
 
     Column(
@@ -58,7 +60,7 @@ fun SplashScreen(device: DeviceInfo, modifier: Modifier = Modifier) {
         LogoMark(64.dp)
         Spacer(Modifier.height(20.dp))
         Text("NexusPlay", style = MaterialTheme.typography.displaySmall)
-        Text("PC game launcher", style = MaterialTheme.typography.bodyMedium, color = Titanium)
+        Text(stringResource(R.string.tagline), style = MaterialTheme.typography.bodyMedium, color = Titanium)
         Spacer(Modifier.height(36.dp))
         SegmentBar(fraction = { progress.value })
         Spacer(Modifier.height(18.dp))

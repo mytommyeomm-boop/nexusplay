@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.StatFs
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.nexusplay.launcher.R
 import java.util.Locale
 
 /** Real hardware facts used by the compatibility checks added in later stages. */
@@ -44,7 +45,7 @@ object DeviceInfoReader {
             model = if (Build.MODEL.startsWith(Build.MANUFACTURER, ignoreCase = true)) Build.MODEL
             else "$manufacturer ${Build.MODEL}",
             androidVersion = "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})",
-            primaryAbi = Build.SUPPORTED_ABIS.firstOrNull() ?: "unknown",
+            primaryAbi = Build.SUPPORTED_ABIS.firstOrNull() ?: context.getString(R.string.unknown),
             is64BitArm = Build.SUPPORTED_64_BIT_ABIS.contains("arm64-v8a"),
             totalRamBytes = memory.totalMem,
             freeStorageBytes = stat.availableBytes,

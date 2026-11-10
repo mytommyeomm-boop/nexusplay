@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.runtime
 
+import com.nexusplay.launcher.R
+import com.nexusplay.launcher.core.UiText
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -49,5 +51,11 @@ class RuntimeAssessorTest {
         assertNotNull(ShortcutPath.validate("game.desktop"))
         assertNotNull(ShortcutPath.validate("/sdcard/../x.desktop"))
         assertNotNull(ShortcutPath.validate("/sdcard/game.exe"))
+    }
+
+    @Test fun messagesCarryThaiResourceIdsNotEnglish() {
+        assertEquals(UiText(R.string.path_err_empty), ShortcutPath.validate(""))
+        assertEquals(UiText(R.string.rt_sum_missing), assess(RuntimeDetection.Missing).summary)
+        assertEquals(UiText(R.string.rt_sum_unknown), assess(installed(exported = true)).summary)
     }
 }

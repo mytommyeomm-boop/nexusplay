@@ -1,6 +1,9 @@
 package com.nexusplay.launcher.runtime
 
-/** Pure decision logic, kept free of Android types so it can be unit tested. */
+import com.nexusplay.launcher.R
+import com.nexusplay.launcher.core.UiText
+
+/** Pure decision logic with no Android services, so it can be unit tested. Messages are UiText (Thai at display time). */
 object RuntimeAssessor {
 
     fun capabilities(d: RuntimeDetection) = RuntimeCapabilities(
@@ -21,68 +24,75 @@ object RuntimeAssessor {
         hasVulkan: Boolean
     ): RuntimeAssessment {
         if (!d.installed) {
-            return RuntimeAssessment(CompatStatus.RuntimeMissing, "Not installed on this device.", emptyList())
+            return RuntimeAssessment(CompatStatus.RuntimeMissing, UiText(R.string.rt_sum_missing), emptyList())
         }
         val caps = capabilities(d)
         val minSdk = d.minSdk
         val sdkOk = minSdk == null || deviceSdk >= minSdk
 
         val evidence = buildList {
-            add(Evidence("Version", versionText(d), null))
-            if (minSdk != null) add(Evidence("Needs Android", "API $minSdk (device: $deviceSdk)", sdkOk))
-            add(Evidence("CPU", if (is64BitArm) "$primaryAbi, 64-bit ARM" else "$primaryAbi, not 64-bit ARM", null))
-            add(Evidence("Vulkan", if (hasVulkan) "Reported" else "Not reported", null))
             add(
                 Evidence(
-                    "Game launch entry",
-                    when {
-                        !d.entryFound -> "Not found"
-                        !d.entryEnabled -> "Disabled"
-                        d.entryExported -> "Open to other apps"
-                        else -> "Private to the runtime"
-                    },
+                    UiText(R.string.rt_ev_version),
+                    UiText(
+                        R.string.rt_ev_version_fmt,
+                        d.versionName ?: UiText(R.string.unknown),
+                        d.versionCode?.toString() ?: "?"
+                    ),
+                    null
+                )
+            )
+            if (minSdk != null) {
+                add(Evidence(UiText(R.string.rt_ev_needs_android), UiText(R.string.rt_ev_needs_value, minSdk, deviceSdk), sdkOk))
+            }
+            add(
+                Evidence(
+                    UiText(R.string.rt_ev_cpu),
+                    UiText(if (is64BitArm) R.string.rt_ev_cpu_arm64 else R.string.rt_ev_cpu_other, primaryAbi),
+                    null
+                )
+            )
+            add(
+                Evidence(
+                    UiText(R.string.vulkan_label),
+                    UiText(if (hasVulkan) R.string.settings_vulkan_yes else R.string.settings_vulkan_no),
+                    null
+                )
+            )
+            add(
+                Evidence(
+                    UiText(R.string.rt_ev_entry),
+                    UiText(
+                        when {
+                            !d.entryFound -> R.string.rt_entry_missing
+                            !d.entryEnabled -> R.string.rt_entry_disabled
+                            d.entryExported -> R.string.rt_entry_open
+                            else -> R.string.rt_entry_private
+                        }
+                    ),
                     caps.canLaunchShortcut
                 )
             )
         }
 
         return when {
-            !sdkOk -> RuntimeAssessment(
-                CompatStatus.Incompatible,
-                "This runtime needs a newer Android version than this device runs.", evidence
-            )
-            caps.canLaunchShortcut -> RuntimeAssessment(
-                CompatStatus.Unknown,
-                "Installed and open to launches from other apps. No launch has been confirmed on this device yet.",
-                evidence
-            )
-            caps.canOpenApp -> RuntimeAssessment(
-                CompatStatus.Partial,
-                "Installed, but it keeps its game screen private. NexusPlay can open the app; games must be started inside it.",
-                evidence
-            )
-            else -> RuntimeAssessment(
-                CompatStatus.Incompatible,
-                "Installed, but it offers no way to be opened or launched from here.", evidence
-            )
+            !sdkOk -> RuntimeAssessment(CompatStatus.Incompatible, UiText(R.string.rt_sum_old_android), evidence)
+            caps.canLaunchShortcut -> RuntimeAssessment(CompatStatus.Unknown, UiText(R.string.rt_sum_unknown), evidence)
+            caps.canOpenApp -> RuntimeAssessment(CompatStatus.Partial, UiText(R.string.rt_sum_partial), evidence)
+            else -> RuntimeAssessment(CompatStatus.Incompatible, UiText(R.string.rt_sum_no_entry), evidence)
         }
-    }
-
-    private fun versionText(d: RuntimeDetection): String {
-        val name = d.versionName ?: "unknown"
-        return if (d.versionCode != null) "$name (${d.versionCode})" else name
     }
 }
 
 object ShortcutPath {
-    /** Returns an error message, or null when the path is acceptable. */
-    fun validate(raw: String): String? {
+    /** Returns a Thai-resource error message, or null when the path is acceptable. */
+    fun validate(raw: String): UiText? {
         val p = raw.trim()
         return when {
-            p.isEmpty() -> "Enter the path of an exported .desktop file."
-            !p.startsWith("/") -> "The path must be absolute and start with /."
-            p.contains("..") -> "Paths containing .. are not accepted."
-            !p.endsWith(".desktop", ignoreCase = true) -> "The file must end with .desktop."
+            p.isEmpty() -> UiText(R.string.path_err_empty)
+            !p.startsWith("/") -> UiText(R.string.path_err_relative)
+            p.contains("..") -> UiText(R.string.path_err_dots)
+            !p.endsWith(".desktop", ignoreCase = true) -> UiText(R.string.path_err_extension)
             else -> null
         }
     }

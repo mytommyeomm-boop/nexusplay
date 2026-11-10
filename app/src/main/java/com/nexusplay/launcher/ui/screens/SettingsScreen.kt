@@ -2,6 +2,8 @@ package com.nexusplay.launcher.ui.screens
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.nexusplay.launcher.core.DeviceInfo
 import com.nexusplay.launcher.core.DeviceInfoReader
@@ -48,7 +51,12 @@ private fun appVersion(context: Context): String =
     runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }
         .getOrNull() ?: "unknown"
 
-private data class PreferenceEntry(val icon: ImageVector, val title: String, val subtitle: String)
+private data class PreferenceEntry(
+    val icon: ImageVector,
+    val title: String,
+    val subtitle: String,
+    val onClick: (() -> Unit)? = null
+)
 
 private val plannedPreferences = listOf(
     PreferenceEntry(NeonIcons.Cpu, "Graphics and performance", "Resolution scale, frame limit, power use"),
@@ -60,7 +68,7 @@ private val plannedPreferences = listOf(
 )
 
 @Composable
-fun SettingsScreen(contentPadding: PaddingValues) {
+fun SettingsScreen(contentPadding: PaddingValues, onOpenJoystick: () -> Unit) {
     val device = LocalDeviceInfo.current
     val context = LocalContext.current
     val version = remember { appVersion(context) }
@@ -69,7 +77,16 @@ fun SettingsScreen(contentPadding: PaddingValues) {
         item { ScreenHeader("Settings", "Device facts and app preferences", readout = "v$version") }
         item { DevicePanel(device) }
         item { SectionTitle("Preferences") }
-        item { PreferencePanel() }
+        item {
+            PreferencePanel(
+                listOf(
+                    PreferenceEntry(
+                        NeonIcons.Joystick, "Joystick",
+                        "Sensitivity, deadzone, look and calibration", onOpenJoystick
+                    )
+                ) + plannedPreferences
+            )
+        }
     }
 }
 
@@ -110,7 +127,7 @@ private fun DevicePanel(info: DeviceInfo) {
 
 /** One continuous panel with hairline dividers instead of a card per row. */
 @Composable
-private fun PreferencePanel() {
+private fun PreferencePanel(entries: List<PreferenceEntry>) {
     DeckPanel(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,7 +135,7 @@ private fun PreferencePanel() {
         shape = ChamferShape(16.dp, topLeft = true),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        plannedPreferences.forEachIndexed { index, entry ->
+        entries.forEachIndexed { index, entry ->
             if (index > 0) {
                 Spacer(
                     Modifier
@@ -134,10 +151,21 @@ private fun PreferencePanel() {
 
 @Composable
 private fun PreferenceRow(entry: PreferenceEntry) {
+    val interaction = remember { MutableInteractionSource() }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 64.dp)
+            .then(
+                if (entry.onClick != null) {
+                    Modifier.clickable(
+                        interactionSource = interaction,
+                        indication = null,
+                        role = Role.Button,
+                        onClick = entry.onClick
+                    )
+                } else Modifier
+            )
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -156,8 +184,13 @@ private fun PreferenceRow(entry: PreferenceEntry) {
             Text(entry.subtitle, style = MaterialTheme.typography.bodySmall, color = Titanium)
         }
         Spacer(Modifier.width(10.dp))
-        StatusLed(Lime, lit = false)
+        val live = entry.onClick != null
+        StatusLed(Lime, lit = live)
         Spacer(Modifier.width(6.dp))
-        Text("soon", style = MaterialTheme.typography.labelSmall, color = TextMuted)
+        Text(
+            if (live) "open" else "soon",
+            style = MaterialTheme.typography.labelSmall,
+            color = if (live) Lime else TextMuted
+        )
     }
 }

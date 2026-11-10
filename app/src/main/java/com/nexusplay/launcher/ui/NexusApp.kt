@@ -15,15 +15,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.nexusplay.launcher.core.DeviceInfoReader
 import com.nexusplay.launcher.core.LocalDeviceInfo
+import com.nexusplay.launcher.input.JoystickSettingsHolder
+import com.nexusplay.launcher.input.LocalJoystickSettings
 import com.nexusplay.launcher.ui.components.DeckBackground
 import com.nexusplay.launcher.ui.components.SplashScreen
 import com.nexusplay.launcher.ui.navigation.AppNavigation
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 @Composable
-fun NexusApp() {
+fun NexusApp(joystick: JoystickSettingsHolder) {
     val context = LocalContext.current
     val device = remember { DeviceInfoReader.read(context) }
+
+    // Write settings to disk shortly after the last change; MainActivity.onStop flushes as well.
+    LaunchedEffect(joystick.settings) {
+        delay(250)
+        withContext(Dispatchers.IO) { joystick.flush() }
+    }
 
     // rememberSaveable so rotating the phone does not replay the boot screen.
     var booting by rememberSaveable { mutableStateOf(true) }
@@ -34,7 +44,10 @@ fun NexusApp() {
         }
     }
 
-    CompositionLocalProvider(LocalDeviceInfo provides device) {
+    CompositionLocalProvider(
+        LocalDeviceInfo provides device,
+        LocalJoystickSettings provides joystick
+    ) {
         DeckBackground {
             AnimatedVisibility(
                 visible = !booting,

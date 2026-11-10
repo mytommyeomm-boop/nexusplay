@@ -11,3 +11,6 @@ enum class Destination(val route: String, val label: String, val icon: ImageVect
     Manager("manager", "Manager", NeonIcons.Folder),
     Settings("settings", "Settings", NeonIcons.Sliders)
 }
+
+/** Sub-screen of Settings; not a tab. */
+const val JOYSTICK_ROUTE = "settings/joystick"

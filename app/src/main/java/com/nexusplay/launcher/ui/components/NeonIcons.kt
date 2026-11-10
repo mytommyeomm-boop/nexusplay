@@ -133,4 +133,13 @@ object NeonIcons {
             line(12f, 11f, 12f, 16f); line(12f, 8f, 12.01f, 8f)
         }
     }
+
+    val Joystick: ImageVector by lazy {
+        icon("Joystick") {
+            circle(12f, 12f, 9f)
+            circle(12f, 12f, 3.5f)
+            line(12f, 3f, 12f, 5.5f); line(12f, 18.5f, 12f, 21f)
+            line(3f, 12f, 5.5f, 12f); line(18.5f, 12f, 21f, 12f)
+        }
+    }
 }

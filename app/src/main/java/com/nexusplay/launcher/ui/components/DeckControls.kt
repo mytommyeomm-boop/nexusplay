@@ -290,8 +290,8 @@ fun ToggleRow(
 fun DeckSegmented(
     options: List<String>,
     selected: Int,
-    onSelect: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSelect: (Int) -> Unit
 ) {
     val shape = ChamferShape(10.dp, topLeft = true, bottomRight = true)
     Row(

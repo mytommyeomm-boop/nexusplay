@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ภาษาไทยคือภาษาเริ่มต้นและภาษาหลักของแอป ข้อความทั้งหมดที่ผู้ใช้เห็นอยู่ในไฟล์นี้ที่เดียว
+  ชื่อเฉพาะและคำศัพท์เทคนิค (Winlator, Vulkan, ARM64, .exe ฯลฯ) คงไว้ตามเดิมโดยตั้งใจ
+-->
+<resources>
+    <string name="tagline">ตัวเปิดเกมพีซีบนมือถือ</string>
+    <string name="unknown">ไม่ทราบ</string>
+
+    <!-- เมนูนำทาง -->
+    <string name="nav_home">หน้าหลัก</string>
+    <string name="nav_library">คลังเกม</string>
+    <string name="nav_import">นำเข้า</string>
+    <string name="nav_manager">จัดการ</string>
+    <string name="nav_settings">ตั้งค่า</string>
+
+    <!-- ปุ่มทั่วไป -->
+    <string name="action_back">กลับ</string>
+    <string name="action_rescan">สแกนใหม่</string>
+    <string name="action_open_app">เปิดแอป</string>
+    <string name="action_open_project">เปิดหน้าโปรเจกต์</string>
+    <string name="action_import_game">นำเข้าเกม</string>
+
+
+    <!-- ภาษา -->
+    <string name="lang_hint">ภาษานี้จะใช้ทั่วทั้งแอป และเปลี่ยนได้ภายหลังในหน้าตั้งค่า</string>
+    <string name="lang_confirm">ยืนยันและเข้าใช้งาน</string>
+    <string name="lang_apply">ใช้ภาษานี้</string>
+    <string name="lang_current">กำลังใช้ภาษานี้อยู่</string>
+    <string name="lang_save_failed">บันทึกตัวเลือกไม่สำเร็จ ตรวจสอบว่าเครื่องยังมีพื้นที่ว่าง แล้วลองอีกครั้ง</string>
+    <string name="lang_settings_title">ภาษา</string>
+    <string name="lang_settings_subtitle">เลือกภาษาที่ใช้ในแอป</string>
+    <string name="pref_language_title">ภาษา</string>
+    <string name="pref_language_subtitle">สลับระหว่างภาษาไทยและภาษาอังกฤษ</string>
+
+    <!-- หน้าเปิดแอป -->
+    <string name="splash_architecture">สถาปัตยกรรม</string>
+    <string name="splash_memory">หน่วยความจำ</string>
+    <string name="vulkan_yes">รองรับ</string>
+    <string name="vulkan_no">ไม่พบการรองรับ</string>
+
+    <!-- หน้าหลัก -->
+    <string name="home_hero_title">ยังไม่มีเกมในเครื่อง</string>
+    <string name="home_hero_body">นำเข้าไฟล์เกมที่บีบอัดไว้ ยืนยันไฟล์ .exe ที่ตรวจพบ แล้วเปิดเกมผ่านระบบจำลองที่เข้ากันได้</string>
+    <string name="home_storage_label">พื้นที่ว่าง</string>
+    <string name="home_storage_value">ว่าง %1$s จากทั้งหมด %2$s</string>
+    <string name="home_module_library_caption">ดูเกมทั้งหมดของคุณ</string>
+    <string name="home_module_manager_caption">ไฟล์และภาพปก</string>
+    <string name="home_module_settings_caption">อุปกรณ์และระบบจำลอง</string>
+    <string name="shelf_recent_title">เล่นล่าสุด</string>
+    <string name="shelf_recent_hint">เกมที่คุณเปิดเล่นจะมาอยู่ในช่องเหล่านี้</string>
+    <string name="shelf_favorites_title">เกมโปรด</string>
+    <string name="shelf_favorites_hint">เกมที่คุณกดเป็นเกมโปรดจะถูกปักไว้ที่นี่</string>
+    <string name="shelf_new_title">นำเข้าล่าสุด</string>
+    <string name="shelf_new_hint">เกมที่เพิ่งนำเข้าจะแสดงที่นี่ก่อน</string>
+
+    <!-- คลังเกม -->
+    <string name="library_title">คลังเกม</string>
+    <string name="library_subtitle">เกมทั้งหมดที่คุณนำเข้า</string>
+    <string name="library_empty_title">คลังเกมยังว่างอยู่</string>
+    <string name="library_empty_message">เกมที่นำเข้าจะแสดงเป็นการ์ดภาพปก ซึ่งคุณเปิด กดเป็นเกมโปรด และเล่นได้จากหน้านี้</string>
+
+    <!-- จัดการเกม -->
+    <string name="manager_title">จัดการเกม</string>
+    <string name="manager_subtitle">เปลี่ยนชื่อ เปลี่ยนภาพปก และจัดระเบียบเกม</string>
+    <string name="manager_empty_title">ยังไม่มีอะไรให้จัดการ</string>
+    <string name="manager_empty_message">หลังนำเข้าเกมแล้ว คุณจะเปลี่ยนชื่อ เปลี่ยนภาพปก และจัดการโฟลเดอร์ของเกมได้ที่นี่</string>
+
+    <!-- นำเข้าเกม -->
+    <string name="import_title">นำเข้าเกม</string>
+    <string name="import_subtitle">นำเข้าไฟล์เกมที่บีบอัดไว้สู่คลังเกมของคุณ</string>
+    <string name="import_intake_title">เลือกไฟล์เกม</string>
+    <string name="import_intake_body">เลือกไฟล์ ZIP, 7Z หรือ TAR จากโทรศัพท์ ระบบจะไม่เปิดหรือรันไฟล์ใดระหว่างนำเข้า</string>
+    <string name="import_choose_file">เลือกไฟล์</string>
+    <string name="import_picker_note">ตัวเลือกไฟล์ยังไม่พร้อมใช้งาน จะเปิดให้ใช้พร้อมระบบแตกไฟล์ในอัปเดตถัดไป</string>
+    <string name="import_formats_title">รูปแบบไฟล์ที่รองรับ</string>
+    <string name="import_formats_note">รูปแบบที่ไฟติดอยู่จะรองรับเมื่อมีระบบแตกไฟล์ ส่วน RAR ต้องใช้ตัวถอดรหัสแยกต่างหาก จึงจะมาในเวอร์ชันหลัง</string>
+    <string name="import_steps_title">ขั้นตอนการนำเข้า</string>
+    <string name="import_step_1">เลือกไฟล์ที่บีบอัดไว้จากที่เก็บข้อมูลในเครื่อง</string>
+    <string name="import_step_2">เลือกตำแหน่งที่จะแตกไฟล์เกม</string>
+    <string name="import_step_3">ดูความคืบหน้า หรือยกเลิกได้ทุกเมื่อ</string>
+    <string name="import_step_4">ตรวจสอบไฟล์ .exe ที่ตรวจพบ แล้วกดยืนยัน</string>
+
+    <!-- ตั้งค่า -->
+    <string name="settings_title">ตั้งค่า</string>
+    <string name="settings_subtitle">ข้อมูลอุปกรณ์และการตั้งค่าแอป</string>
+    <string name="settings_device_title">อุปกรณ์เครื่องนี้</string>
+    <string name="settings_not_arm64">ไม่ใช่ ARM64</string>
+    <string name="settings_row_device">อุปกรณ์</string>
+    <string name="settings_row_system">ระบบ</string>
+    <string name="settings_row_cpu">ซีพียู</string>
+    <string name="settings_row_memory">หน่วยความจำ</string>
+    <string name="settings_row_free_storage">พื้นที่ว่าง</string>
+    <string name="settings_vulkan_yes">อุปกรณ์รายงานว่ารองรับ</string>
+    <string name="settings_vulkan_no">อุปกรณ์ไม่ได้รายงาน</string>
+    <string name="settings_prefs_title">การตั้งค่า</string>
+    <string name="pref_tag_open">เปิดดู</string>
+    <string name="pref_tag_soon">เร็วๆ นี้</string>
+    <string name="pref_joystick_title">จอยสติ๊ก</string>
+    <string name="pref_joystick_subtitle">ความไว ระยะตาย รูปลักษณ์ และการปรับเทียบ</string>
+    <string name="pref_runtimes_title">ระบบจำลอง</string>
+    <string name="pref_runtimes_subtitle">ตรวจหา เลือก และทดสอบระบบจำลองเกมพีซี</string>
+    <string name="pref_graphics_title">กราฟิกและประสิทธิภาพ</string>
+    <string name="pref_graphics_subtitle">สเกลความละเอียด ขีดจำกัดเฟรมเรต และการใช้พลังงาน</string>
+    <string name="pref_storage_title">พื้นที่จัดเก็บ</string>
+    <string name="pref_storage_subtitle">ตำแหน่งเก็บเกมและพื้นที่ที่ใช้ไป</string>
+    <string name="pref_interface_title">หน้าตาแอป</string>
+    <string name="pref_interface_subtitle">สีเน้นและความหนาแน่นของเลย์เอาต์</string>
+    <string name="pref_backup_title">สำรองและกู้คืนข้อมูล</string>
+    <string name="pref_backup_subtitle">ส่งออกและนำเข้าคลังเกมกับการตั้งค่า</string>
+    <string name="pref_owner_title">โหมดเจ้าของ</string>
+    <string name="pref_owner_subtitle">ชื่อแอป โลโก้ และการดูแลระบบ</string>
+
+    <!-- จอยสติ๊ก -->
+    <string name="js_title">จอยสติ๊ก</string>
+    <string name="js_saved">บันทึกอัตโนมัติ</string>
+    <string name="js_save_failed">บันทึกไม่สำเร็จ</string>
+    <string name="js_idle">ว่าง</string>
+    <string name="dir_right">ขวา</string>
+    <string name="dir_up_right">ขวาบน</string>
+    <string name="dir_up">บน</string>
+    <string name="dir_up_left">ซ้ายบน</string>
+    <string name="dir_left">ซ้าย</string>
+    <string name="dir_down_left">ซ้ายล่าง</string>
+    <string name="dir_down">ล่าง</string>
+    <string name="dir_down_right">ขวาล่าง</string>
+    <string name="js_key_peak">สูงสุด %1$s</string>
+    <string name="js_key_reset_cal">ล้างการปรับเทียบ</string>
+    <string name="js_key_calibrate">ปรับเทียบ</string>
+    <string name="js_status_not_tested">ยังไม่ได้ทดสอบการกลับสู่ตำแหน่งกลาง</string>
+    <string name="js_status_held">ค้างอยู่ที่ X %1$s  Y %2$s</string>
+    <string name="js_status_centered">กลับสู่ตำแหน่งกลางแล้ว (0.00, 0.00)</string>
+    <string name="js_status_off_center">ปล่อยนิ้วแล้วแต่ยังไม่กลับถึงกลาง: %1$s, %2$s</string>
+    <string name="js_calib_running">หมุนจอยสติ๊กให้สุดขอบเป็นวงกลม เหลืออีก %1$d วินาที</string>
+    <string name="js_calib_done">ปรับเทียบแล้ว: ดันเพียง %1$s ของระยะก็ได้ค่าเต็ม</string>
+    <string name="js_calib_failed">ดันได้เพียง %1$s ของระยะทั้งหมด ลองดันให้ใกล้ขอบมากขึ้นแล้วทำซ้ำ</string>
+    <string name="js_bridge_none_name">ไม่มีตัวกลางส่งอินพุต</string>
+    <string name="js_bridge_none_reason">ยังไม่มีตัวกลางส่งอินพุตของระบบจำลอง จึงยังส่งการควบคุมเข้าเกมไม่ได้</string>
+    <string name="js_bridge_not_connected">ส่งเข้าเกม: ยังไม่เชื่อมต่อ %1$s</string>
+    <string name="js_bridge_ready">ส่งเข้าเกม: เชื่อมต่อกับ %1$s แล้ว</string>
+    <string name="group_sensitivity">ความไวของจอยสติ๊ก</string>
+    <string name="group_deadzone">ระยะตายของจอยสติ๊ก</string>
+    <string name="group_size_position">ขนาดและตำแหน่ง</string>
+    <string name="group_movement">การเคลื่อนที่</string>
+    <string name="group_appearance">รูปลักษณ์</string>
+    <string name="group_feedback">การสั่นและการปรับเทียบ</string>
+    <string name="js_sens_overall">ความไวรวม</string>
+    <string name="js_sens_x">แกน X</string>
+    <string name="js_sens_y">แกน Y</string>
+    <string name="js_deadzone_inner">ระยะตายด้านใน</string>
+    <string name="js_deadzone_note">การเคลื่อนที่ภายในวงกลมเส้นประจะไม่ส่งสัญญาณใดๆ ช่วยกรองอาการนิ้วสั่นและการแตะโดยไม่ตั้งใจ</string>
+    <string name="js_size">ขนาด</string>
+    <string name="js_travel">รัศมีการเคลื่อนที่</string>
+    <string name="js_mode">โหมด</string>
+    <string name="js_mode_fixed">ตรึงตำแหน่ง</string>
+    <string name="js_mode_floating">ลอยตามนิ้ว</string>
+    <string name="js_side">ฝั่ง</string>
+    <string name="js_side_left">ซ้าย</string>
+    <string name="js_side_right">ขวา</string>
+    <string name="js_position">ตำแหน่งบนหน้าจอเล่นเกม</string>
+    <string name="js_position_note">ลากจอยสติ๊กเพื่อวางตำแหน่ง ระบบบันทึกตำแหน่งไว้แล้ว และโหมดเล่นเกมจะนำไปใช้ในขั้นถัดไป</string>
+    <string name="js_response">การตอบสนอง</string>
+    <string name="js_response_responsive">ฉับไว</string>
+    <string name="js_response_smooth">นุ่มนวล</string>
+    <string name="js_curve">เส้นโค้งการตอบสนอง</string>
+    <string name="js_curve_linear">เชิงเส้น</string>
+    <string name="js_curve_exponential">เอ็กซ์โพเนนเชียล</string>
+    <string name="js_curve_strength">ความแรงของเส้นโค้ง</string>
+    <string name="js_invert_x">กลับแกน X</string>
+    <string name="js_invert_y">กลับแกน Y</string>
+    <string name="js_return">เมื่อปล่อยนิ้ว</string>
+    <string name="js_return_spring">สปริง</string>
+    <string name="js_return_soft">นุ่ม</string>
+    <string name="js_return_snap">กลับทันที</string>
+    <string name="js_return_hold">ค้างไว้</string>
+    <string name="js_style">สไตล์</string>
+    <string name="js_style_metallic">โลหะ</string>
+    <string name="js_style_minimal">เรียบง่าย</string>
+    <string name="js_style_futuristic">ล้ำยุค</string>
+    <string name="js_ring">ลวดลายวงแหวน</string>
+    <string name="js_ring_plain">เรียบ</string>
+    <string name="js_ring_ticked">ขีดบอกมุม</string>
+    <string name="js_ring_segmented">แบ่งช่วง</string>
+    <string name="js_cap">ฝาครอบตรงกลาง</string>
+    <string name="js_cap_dome">โดม</string>
+    <string name="js_cap_flat">แบน</string>
+    <string name="js_cap_ringed">มีวงแหวน</string>
+    <string name="js_opacity">ความทึบ</string>
+    <string name="js_lighting">ความสว่างของไฟ</string>
+    <string name="js_accent">สีเน้น</string>
+    <string name="js_haptics">การสั่น</string>
+    <string name="js_haptics_caption">สั่นเบาๆ เมื่อแตะ และเมื่อดันถึงขอบ</string>
+    <string name="js_haptics_none">อุปกรณ์นี้ไม่มีมอเตอร์สั่น</string>
+    <string name="js_touch_feedback">การตอบสนองเมื่อแตะ</string>
+    <string name="js_touch_caption">ปุ่มกลมจะยุบลงและขอบจะสว่างขึ้นขณะที่แตะ</string>
+    <string name="js_gain_note">ค่าปรับเทียบ: %1$sx กดปุ่ม ปรับเทียบ เหนือจอยสติ๊กเพื่อเริ่ม</string>
+    <string name="js_restore_previous">คืนค่าก่อนหน้า</string>
+    <string name="js_reset_default">รีเซ็ตเป็นค่าเริ่มต้น</string>
+    <string name="js_reset_confirm">กดอีกครั้งเพื่อยืนยัน</string>
+
+    <!-- ระบบจำลอง -->
+    <string name="rt_title">ระบบจำลอง</string>
+    <string name="rt_intro">NexusPlay ไม่ได้รันเกม Windows เอง แต่ส่งเกมต่อให้ระบบจำลองที่ติดตั้งไว้ในเครื่อง และแสดงเฉพาะระบบจำลองที่ตรวจสอบวิธีเปิดเกมกับแหล่งข้อมูลสาธารณะแล้ว</string>
+    <string name="rt_selected_missing">ระบบจำลองที่คุณเลือกไว้ไม่ได้ติดตั้งอยู่แล้ว กรุณาเลือกอันอื่นหรือติดตั้งใหม่</string>
+    <string name="rt_default_note">ระบบจำลองที่เลือกจะเป็นค่าเริ่มต้นของเกมเมื่อมีคลังเกมแล้ว ส่วนการตั้งค่าเฉพาะเกมจะมาพร้อมหน้าตั้งค่าเกม</string>
+    <string name="rt_status_compatible">เข้ากันได้</string>
+    <string name="rt_status_partial">เข้ากันได้บางส่วน</string>
+    <string name="rt_status_unknown">ยังไม่ทราบ</string>
+    <string name="rt_status_incompatible">เข้ากันไม่ได้</string>
+    <string name="rt_status_missing">ยังไม่ได้ติดตั้ง</string>
+    <string name="rt_package">แพ็กเกจ</string>
+    <string name="rt_use">เลือกใช้ตัวนี้</string>
+    <string name="rt_selected">เลือกอยู่</string>
+    <string name="rt_test_field">ทดสอบเปิดเกม: ไฟล์ทางลัดที่ส่งออกมา (.desktop)</string>
+    <string name="rt_launch_shortcut">เปิดทางลัด</string>
+    <string name="rt_setup_show">วิธีติดตั้งและข้อจำกัด</string>
+    <string name="rt_setup_hide">ซ่อนวิธีติดตั้งและข้อจำกัด</string>
+    <string name="rt_setup_heading">วิธีติดตั้ง</string>
+    <string name="rt_limits_heading">ข้อจำกัด</string>
+    <string name="rt_log_title">บันทึกการทำงาน</string>
+    <string name="rt_log_empty">ยังไม่มีบันทึก</string>
+    <string name="rt_ev_version">เวอร์ชัน</string>
+    <string name="rt_ev_version_fmt">%1$s (%2$s)</string>
+    <string name="rt_ev_needs_android">ต้องใช้ Android</string>
+    <string name="rt_ev_needs_value">API %1$d (อุปกรณ์: %2$d)</string>
+    <string name="rt_ev_cpu">ซีพียู</string>
+    <string name="rt_ev_cpu_arm64">%1$s (ARM64)</string>
+    <string name="rt_ev_cpu_other">%1$s (ไม่ใช่ ARM64)</string>
+    <string name="rt_ev_entry">ช่องทางเปิดเกม</string>
+    <string name="rt_entry_missing">ไม่พบ</string>
+    <string name="rt_entry_disabled">ถูกปิดใช้งาน</string>
+    <string name="rt_entry_open">เปิดให้แอปอื่นเรียกใช้</string>
+    <string name="rt_entry_private">ใช้ภายในระบบจำลองเท่านั้น</string>
+    <string name="rt_sum_missing">ยังไม่ได้ติดตั้งในอุปกรณ์นี้</string>
+    <string name="rt_sum_old_android">ระบบจำลองนี้ต้องใช้ Android เวอร์ชันใหม่กว่าที่อุปกรณ์ของคุณใช้อยู่</string>
+    <string name="rt_sum_unknown">ติดตั้งแล้ว และเปิดให้แอปอื่นสั่งเปิดเกมได้ แต่ยังไม่เคยยืนยันด้วยการเปิดเกมจริงบนอุปกรณ์นี้</string>
+    <string name="rt_sum_partial">ติดตั้งแล้ว แต่ระบบจำลองนี้ปิดหน้าจอเกมไว้ใช้ภายในเท่านั้น NexusPlay เปิดตัวแอปให้ได้ แต่ต้องเริ่มเกมจากในแอปนั้นเอง</string>
+    <string name="rt_sum_no_entry">ติดตั้งแล้ว แต่ไม่มีช่องทางให้เปิดหรือสั่งเปิดจากแอปนี้</string>
+
+    <!-- ผลการเปิดแอปและเปิดเกม: เกิดอะไรขึ้น / เพราะอะไร / ทำอย่างไรต่อ -->
+    <string name="rt_ok_opened">เปิด %1$s แล้ว กรุณาเริ่มเกมจากภายในแอปนั้น</string>
+    <string name="rt_ok_handed">Android ส่งคำขอไปยัง %1$s แล้ว แต่ระบบจำลองไม่ส่งผลกลับมา จึงยังไม่ทราบว่าเกมเริ่มทำงานหรือไม่ และจะปิดเมื่อใด</string>
+    <string name="rt_err_no_launcher">ไม่พบช่องทางเปิดแอป %1$s ในอุปกรณ์นี้ ลองติดตั้งหรืออัปเดตแอปนั้นใหม่</string>
+    <string name="rt_err_cannot_open">Android เปิดแอป %1$s ไม่ได้ อาจเพราะแอปถูกปิดใช้งานหรือติดตั้งไม่สมบูรณ์ ลองเปิดแอปจากหน้าจอหลักของเครื่องดู</string>
+    <string name="rt_err_denied_open">Android ปฏิเสธการเปิดแอป %1$s ซึ่งอาจเป็นข้อจำกัดด้านความปลอดภัยของระบบ ลองเปิดแอปด้วยตัวเองแล้วเริ่มเกมจากในแอป</string>
+    <string name="rt_err_not_installed">ยังไม่ได้ติดตั้ง %1$s กรุณาติดตั้งก่อน แล้วกดสแกนใหม่</string>
+    <string name="rt_err_no_entry">%1$s รุ่นนี้ไม่มีหน้าจอเกมที่ใช้เปิดด้วยวิธีนี้ (%2$s) จึงเปิดเกมจากที่นี่ไม่ได้ ลองอัปเดตเป็นรุ่นใหม่กว่า หรือเปิดเกมจากในแอปโดยตรง</string>
+    <string name="rt_err_private">%1$s รุ่นนี้ปิดหน้าจอเกมไว้ใช้ภายในเท่านั้น แอปอื่นจึงสั่งเปิดเกมไม่ได้ ให้เปิดแอปแล้วเริ่มเกมจากที่นั่นแทน</string>
+    <string name="rt_err_activity_missing">Android ไม่พบหน้าจอเกมของ %1$s ลองติดตั้งแอปใหม่ แล้วกดสแกนอีกครั้ง</string>
+    <string name="rt_err_denied_launch">Android ปฏิเสธการสั่งเปิดเกม ซึ่งมักเกิดเมื่อระบบจำลองรุ่นนี้ไม่อนุญาตให้แอปอื่นเรียกใช้ ลองเปิดเกมจากในแอปของระบบจำลองโดยตรง</string>
+    <string name="path_err_empty">กรุณาใส่พาธของไฟล์ .desktop ที่ส่งออกมาจาก Winlator</string>
+    <string name="path_err_relative">พาธต้องเป็นพาธเต็มและขึ้นต้นด้วย /</string>
+    <string name="path_err_dots">ไม่รับพาธที่มี .. อยู่ในนั้น</string>
+    <string name="path_err_extension">ไฟล์ต้องลงท้ายด้วย .desktop</string>
+
+    <!-- ขั้นตอนติดตั้งและข้อจำกัดของแต่ละระบบจำลอง -->
+    <string name="cmod_step_1">ดาวน์โหลดไฟล์ APK จากหน้า Releases ของโปรเจกต์ Winlator Cmod แล้วติดตั้ง</string>
+    <string name="cmod_step_2">เปิด Winlator หนึ่งครั้ง และรอให้การตั้งค่าครั้งแรกเสร็จสิ้น</string>
+    <string name="cmod_step_3">สร้างคอนเทนเนอร์ แล้วสร้างทางลัดของเกมภายใน Winlator</string>
+    <string name="cmod_step_4">ใช้ตัวเลือกส่งออกไปยังฟรอนต์เอนด์ (Export to frontend) ของทางลัดนั้น เพื่อบันทึกไฟล์ .desktop ลงที่เก็บข้อมูลร่วม</string>
+    <string name="cmod_step_5">กลับมาที่นี่ วางพาธของไฟล์นั้นลงในช่องทดสอบ แล้วกดเปิดทางลัด</string>
+    <string name="cmod_limit_1">NexusPlay สร้างทางลัดเองไม่ได้ ต้องสร้างภายใน Winlator ก่อน</string>
+    <string name="cmod_limit_2">Android ไม่ส่งผลลัพธ์กลับมาจากระบบจำลอง NexusPlay จึงไม่ทราบว่าเกมเริ่มแล้วหรือยัง และเกมปิดเมื่อใด</string>
+    <string name="cmod_limit_3">Cmod มีปุ่มควบคุมบนหน้าจอและรองรับจอยในตัวเอง จอยเสมือนของ NexusPlay จึงส่งสัญญาณเข้าไปไม่ได้</string>
+    <string name="cmod_limit_4">วิธีเปิดเกมนี้มาจากแหล่งข้อมูลสาธารณะ และยังไม่เคยยืนยันบนอุปกรณ์ของคุณ ช่องทดสอบคือวิธียืนยัน</string>
+    <string name="official_step_1">ดาวน์โหลดไฟล์ APK จากหน้า Releases ของโปรเจกต์ Winlator แล้วติดตั้ง</string>
+    <string name="official_step_2">เปิด Winlator หนึ่งครั้ง และรอให้การตั้งค่าครั้งแรกเสร็จสิ้น</string>
+    <string name="official_step_3">สร้างคอนเทนเนอร์ แล้วเพิ่มเกมเป็นทางลัดภายใน Winlator</string>
+    <string name="official_step_4">เริ่มเกมจากทางลัดบนหน้าหลักของ Winlator</string>
+    <string name="official_limit_1">Winlator ฉบับทางการปิดหน้าจอเกมไว้ใช้ภายใน NexusPlay จึงเปิดตัวแอปได้ แต่สั่งเริ่มเกมในแอปไม่ได้</string>
+    <string name="official_limit_2">Winlator Cmod รุ่นเก่าบางรุ่นก็ใช้ชื่อแพ็กเกจ com.winlator เช่นกัน แอปจึงอ่านค่าจริงจากเครื่องของคุณว่ารุ่นที่ติดตั้งรับคำสั่งเปิดเกมได้หรือไม่ ไม่ได้เดาจากชื่อ</string>
+    <string name="official_limit_3">NexusPlay ส่งสัญญาณจากจอยเข้า Winlator ไม่ได้</string>
+
+    <!-- บันทึกการทำงาน -->
+    <string name="log_runtime_found">พบ %1$s เวอร์ชัน %2$s</string>
+    <string name="log_runtime_missing">ไม่พบ %1$s ในเครื่อง</string>
+    <string name="log_opened">เปิดแอป %1$s แล้ว</string>
+    <string name="log_handed">ส่งคำขอเปิดทางลัดให้ %1$s แล้ว</string>
+    <string name="log_project_page_failed">ไม่มีแอปที่เปิดหน้าโปรเจกต์ได้</string>
+
+    <!-- Mascot, welcome, tutorials, notices -->
+    <string name="welcome_title">ยินดีต้อนรับสู่ NexusPlay!</string>
+    <string name="welcome_body">สวัสดีค่ะ! ฉันเป็นผู้ช่วยประจำ NexusPlay นะคะ แอปนี้ช่วยจัดการไฟล์เกมพีซี แล้วส่งต่อให้ Winlator Cmod รันให้ค่ะ บางส่วนของแอปยังอยู่ระหว่างพัฒนา ฉันจะบอกเสมอว่าส่วนไหนใช้งานได้แล้ว</string>
+    <string name="welcome_start">พาฉันเดินชมแอป</string>
+    <string name="welcome_skip">ไว้ก่อน ข้ามไปเลย</string>
+    <string name="welcome_footer">เปิดดูอีกครั้งได้ที่ ตั้งค่า > มาสคอต</string>
+    <string name="action_close">ปิด</string>
+    <string name="tut_skip">ข้าม</string>
+    <string name="tut_next">ถัดไป</string>
+    <string name="tut_done">เข้าใจแล้ว</string>
+    <string name="tut_step">%1$d / %2$d</string>
+    <string name="tip_suggest_title">อยากให้พาดูหน้านี้ไหมคะ</string>
+    <string name="tip_suggest_message">ฉันพาดูว่าหน้านี้ทำอะไรได้บ้าง ใช้เวลาไม่ถึงหนึ่งนาทีค่ะ</string>
+    <string name="tip_suggest_action">พาดูเลย</string>
+    <string name="tut_home_name">ทัวร์หน้าหลัก</string>
+    <string name="tut_import_name">การนำเข้าเกม</string>
+    <string name="tut_runtime_name">การตั้งค่า Cmod</string>
+    <string name="tut_joystick_name">จอยสติ๊กเสมือน</string>
+    <string name="tut_settings_name">ทัวร์การตั้งค่า</string>
+    <string name="tut_home_1_title">ศูนย์กลางของแอป</string>
+    <string name="tut_home_1_body">การ์ดนี้บอกว่ามีเกมอะไรอยู่ในเครื่องและพื้นที่ว่างเหลือเท่าไร ปุ่มใหญ่ใช้เริ่มนำเข้าเกมค่ะ</string>
+    <string name="tut_home_2_title">ทางลัด</string>
+    <string name="tut_home_2_body">คลังเกม การจัดการ และการตั้งค่า อยู่ที่ปุ่มเหล่านี้เลยค่ะ เกมที่คุณเล่นและกดโปรดจะมาเรียงในชั้นด้านล่าง</string>
+    <string name="tut_home_3_title">ปุ่มนำทาง 5 ปุ่ม</string>
+    <string name="tut_home_3_body">หน้าหลัก คลังเกม นำเข้า จัดการ และตั้งค่า เส้นสีเขียวบอกว่าตอนนี้คุณอยู่หน้าไหนค่ะ</string>
+    <string name="tut_home_4_title">พร้อมเริ่มหรือยัง</string>
+    <string name="tut_home_4_body">เริ่มจากไปที่ ตั้งค่า > ระบบจำลอง เพื่อเช็กว่าติดตั้ง Winlator Cmod แล้วหรือยังนะคะ เมื่อเข้าไป ฉันจะพาดูเองค่ะ</string>
+    <string name="tut_import_1_title">เลือกไฟล์บีบอัด</string>
+    <string name="tut_import_1_body">เกมมักมาเป็นไฟล์ ZIP, 7Z หรือ TAR คุณจะเลือกไฟล์จากโทรศัพท์ที่นี่ค่ะ ตอนนี้ตัวเลือกไฟล์ยังไม่พร้อม ปุ่มจึงถูกล็อกไว้ก่อน</string>
+    <string name="tut_import_2_title">จากนั้นจะเกิดอะไรขึ้น</string>
+    <string name="tut_import_2_body">NexusPlay จะแตกไฟล์ไปยังโฟลเดอร์ที่คุณเลือก ค้นหาไฟล์ .exe แล้วให้คุณเลือกไฟล์ที่ถูกต้อง โดยไม่รันอะไรเองเด็ดขาดค่ะ</string>
+    <string name="tut_runtime_1_title">ติดตั้ง Cmod แล้วหรือยัง</string>
+    <string name="tut_runtime_1_body">การ์ดนี้แสดงสิ่งที่ฉันพบในเครื่อง ทั้งเวอร์ชัน ข้อกำหนดด้าน Android และว่าแอปนั้นยอมให้แอปอื่นสั่งเปิดเกมหรือไม่ค่ะ</string>
+    <string name="tut_runtime_2_title">ลองสั่งเปิดเกม</string>
+    <string name="tut_runtime_2_body">ใน Cmod ให้สร้างทางลัดของเกม แล้วส่งออกไปยังฟรอนต์เอนด์ จากนั้นวางพาธของไฟล์ .desktop ที่นี่แล้วกดเปิด ฉันบอกได้ว่า Android ส่งคำขอไปแล้วหรือยัง แต่ไม่รู้ว่าเกมเริ่มทำงานจริงหรือเปล่าค่ะ</string>
+    <string name="tut_runtime_3_title">ต้องการความช่วยเหลือไหมคะ</string>
+    <string name="tut_runtime_3_body">เปิดส่วนนี้เพื่อดูขั้นตอนตั้งค่าทีละขั้นและข้อจำกัดที่ทราบ รวมถึงเรื่องที่จอยเสมือนยังควบคุม Cmod ไม่ได้ค่ะ</string>
+    <string name="tut_joystick_1_title">ลองใช้จอยสติ๊ก</string>
+    <string name="tut_joystick_1_body">แตะแล้วลากที่นี่ได้เลยค่ะ ค่า X และ Y คือสัญญาณที่จอยส่งออกจริง ส่วนกราฟเล็กๆ แสดงระยะตายเป็นวงเส้นประ</string>
+    <string name="tut_joystick_2_title">ปรับเทียบจอย</string>
+    <string name="tut_joystick_2_body">กดปรับเทียบ แล้วหมุนจอยสติ๊กรอบขอบเป็นเวลา 4 วินาที ถ้านิ้วเอื้อมถึงขอบได้ไม่สุด ฉันจะนับระยะที่คุณเอื้อมถึงเป็นค่าเต็มให้ค่ะ</string>
+    <string name="tut_joystick_3_title">ปรับให้ถนัดมือ</string>
+    <string name="tut_joystick_3_body">ความไว ระยะตาย ขนาด และรูปลักษณ์อยู่ด้านล่าง ทุกการเปลี่ยนแปลงบันทึกอัตโนมัติค่ะ แต่จอยนี้ยังควบคุม Cmod ไม่ได้นะคะ เพราะ Cmod มีปุ่มควบคุมของตัวเอง</string>
+    <string name="tut_settings_1_title">ห้องควบคุมของคุณ</string>
+    <string name="tut_settings_1_body">ภาษา มาสคอต จอยสติ๊ก และระบบจำลองอยู่ที่นี่ค่ะ แถวที่เขียนว่า เปิดดู ใช้งานได้แล้ว ส่วนที่เขียนว่า เร็วๆ นี้ กำลังจะมา</string>
+    <string name="notice_missing_cmod_title">ไม่พบ Cmod</string>
+    <string name="notice_missing_cmod_message">ติดตั้ง Winlator Cmod แล้วกดสแกนใหม่นะคะ ฉันพาไปหน้าดาวน์โหลดให้ได้เลยค่ะ</string>
+    <string name="notice_open_download">เปิดหน้าดาวน์โหลด</string>
+    <string name="notice_selected_missing_title">ระบบจำลองหายไป</string>
+    <string name="notice_launch_issue_title">เปิดเกมไม่สำเร็จ</string>
+    <string name="notice_launch_issue_message">Android ส่งเกมต่อให้ไม่ได้ค่ะ ดูเหตุผลและวิธีแก้ในการ์ดได้เลย</string>
+    <string name="notice_gamepad_saved_title">บันทึกจอยสติ๊กแล้ว</string>
+    <string name="notice_gamepad_saved_message">เก็บการตั้งค่าจอยสติ๊กไว้ให้แล้วค่ะ ครั้งหน้าก็ยังอยู่</string>
+    <string name="notice_save_failed_title">บันทึกไม่สำเร็จ</string>
+    <string name="notice_save_failed_message">การเปลี่ยนแปลงของจอยสติ๊กอาจหายไปค่ะ ลองเคลียร์พื้นที่ว่างแล้วบันทึกใหม่</string>
+    <string name="notice_preview_title">ผู้ช่วยมาทักทายค่ะ</string>
+    <string name="notice_preview_message">การแจ้งเตือนจะหน้าตาแบบนี้นะคะ</string>
+    <string name="notice_tutorials_reset_title">รีเซ็ตบทแนะนำแล้ว</string>
+    <string name="notice_tutorials_reset_message">ฉันจะเสนอทัวร์ใหม่ในหน้าที่คุณเข้าไปค่ะ</string>
+    <string name="pref_mascot_title">มาสคอต</string>
+    <string name="pref_mascot_subtitle">ผู้ช่วย คำแนะนำ และการแจ้งเตือน</string>
+    <string name="mascot_title">มาสคอต</string>
+    <string name="mascot_subtitle">ปรับการทำงานของผู้ช่วย</string>
+    <string name="mascot_enabled">แสดงมาสคอต</string>
+    <string name="mascot_enabled_cap">ปิดเพื่อแสดงเฉพาะข้อความ</string>
+    <string name="mascot_animations">ภาพเคลื่อนไหว</string>
+    <string name="mascot_animations_cap">เอฟเฟกต์ลอยและค่อยๆ ปรากฏ</string>
+    <string name="mascot_tips">แนะนำวิธีใช้</string>
+    <string name="mascot_tips_cap">เสนอทัวร์สั้นๆ ในหน้าที่ยังไม่เคยดู</string>
+    <string name="mascot_notices">การแจ้งเตือนจากมาสคอต</string>
+    <string name="mascot_notices_cap">แจ้งความสำเร็จ คำเตือน และข้อผิดพลาดแบบเป็นกันเอง</string>
+    <string name="mascot_size">ขนาดการแสดงผล</string>
+    <string name="mascot_size_small">เล็ก</string>
+    <string name="mascot_size_medium">กลาง</string>
+    <string name="mascot_size_large">ใหญ่</string>
+    <string name="mascot_preview_hint">แตะที่ฉันเพื่อดูสีหน้าต่างๆ ได้เลยค่ะ</string>
+    <string name="mascot_off_hint">ซ่อนมาสคอตอยู่ ข้อความจะแสดงเป็นตัวอักษรเท่านั้น</string>
+    <string name="mascot_tutorials">บทแนะนำ</string>
+    <string name="mascot_play">เล่น</string>
+    <string name="mascot_seen">ดูแล้ว</string>
+    <string name="mascot_reset_tutorials">รีเซ็ตบทแนะนำทั้งหมด</string>
+    <string name="mascot_replay_welcome">ดูหน้าต้อนรับอีกครั้ง</string>
+    <string name="mascot_test_notice">ลองดูการแจ้งเตือน</string>
+    <string name="pose_wave">โบกมือ</string>
+    <string name="pose_talking">กำลังพูด</string>
+    <string name="pose_silent">เงียบ</string>
+    <string name="pose_happy">มีความสุข</string>
+    <string name="pose_confused">สับสน</string>
+    <string name="pose_surprised">ตกใจ</string>
+    <string name="pose_sleepy">ง่วง</string>
+    <string name="pose_sleeping">หลับ</string>
+    <string name="pose_dancing">เต้น</string>
+    <string name="pose_thinking">กำลังคิด</string>
+    <string name="pose_sad">เศร้า</string>
+    <string name="pose_excited">ตื่นเต้น</string>
+    <string name="pose_gaming">กำลังเล่นเกม</string>
+    <string name="pose_loading">กำลังทำงาน</string>
+    <string name="pose_announce">ประกาศ</string>
+    <string name="pose_dizzy">มึนงง</string>
+    <string name="pose_thanks">ขอบคุณ</string>
+</resources>

@@ -1,5 +1,12 @@
 package com.nexusplay.launcher.ui.screens
 
+import com.nexusplay.launcher.mascot.NoticeKind
+import com.nexusplay.launcher.mascot.NoticeAction
+import com.nexusplay.launcher.mascot.MascotNotice
+import com.nexusplay.launcher.mascot.LocalMascot
+import androidx.compose.runtime.LaunchedEffect
+import com.nexusplay.launcher.ui.mascot.tutorialAnchor
+import com.nexusplay.launcher.mascot.Anchor
 import androidx.compose.ui.res.stringResource
 import com.nexusplay.launcher.core.text
 import com.nexusplay.launcher.core.UiText
@@ -101,6 +108,29 @@ fun RuntimeManagerScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
     val selectedId = RuntimeSelection.selectedId
     val selectedMissing = selectedId != null && detections[selectedId]?.installed != true
 
+    val mascot = LocalMascot.current
+    LaunchedEffect(detections) {
+        val cmod = RuntimeRegistry.byId("winlator-cmod")
+        if (cmod != null && detections[cmod.id]?.installed == false) {
+            mascot.notify(
+                MascotNotice(
+                    "missing_cmod", NoticeKind.MissingRuntime,
+                    UiText(R.string.notice_missing_cmod_title), UiText(R.string.notice_missing_cmod_message),
+                    NoticeAction(UiText(R.string.notice_open_download)) { openUrl(context, cmod.projectUrl) }
+                ),
+                cooldownMs = 600_000L
+            )
+        } else if (selectedMissing) {
+            mascot.notify(
+                MascotNotice(
+                    "selected_missing", NoticeKind.Warning,
+                    UiText(R.string.notice_selected_missing_title), UiText(R.string.rt_selected_missing)
+                ),
+                cooldownMs = 600_000L
+            )
+        }
+    }
+
     Column(
         Modifier
             .fillMaxSize()
@@ -149,7 +179,8 @@ fun RuntimeManagerScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
                         selected = backend.id == selectedId,
                         shape = if (index % 2 == 0) ChamferShape(20.dp, topLeft = true, bottomRight = true)
                         else ChamferShape(20.dp, topRight = true, bottomLeft = true),
-                        onSelect = { RuntimeSelection.select(context, backend.id) }
+                        onSelect = { RuntimeSelection.select(context, backend.id) },
+                        isFirst = index == 0
                     )
                 }
             }
@@ -171,10 +202,12 @@ private fun RuntimeCard(
     detection: RuntimeDetection,
     selected: Boolean,
     shape: ChamferShape,
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
+    isFirst: Boolean
 ) {
     val context = LocalContext.current
     val device = LocalDeviceInfo.current
+    val mascot = LocalMascot.current
     val assessment = remember(detection) {
         RuntimeAssessor.assess(detection, Build.VERSION.SDK_INT, device.is64BitArm, device.primaryAbi, device.hasVulkan)
     }
@@ -187,7 +220,8 @@ private fun RuntimeCard(
     DeckPanel(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .then(if (isFirst) Modifier.tutorialAnchor(Anchor.RuntimeCard) else Modifier),
         shape = shape,
         contentPadding = PaddingValues(16.dp)
     ) {
@@ -227,15 +261,28 @@ private fun RuntimeCard(
             }
 
             if (caps.canLaunchShortcut) {
-                Field(stringResource(R.string.rt_test_field)) {
+                Field(
+                    stringResource(R.string.rt_test_field),
+                    if (isFirst) Modifier.tutorialAnchor(Anchor.RuntimeTest) else Modifier
+                ) {
                     DeckTextField(path, { path = it; feedback = null }, "/storage/emulated/0/.../game.desktop")
                 }
                 DeckButton(
                     text = stringResource(R.string.rt_launch_shortcut),
                     onClick = {
                         val error = ShortcutPath.validate(path)
-                        feedback = if (error != null) LaunchResult.Failed(error)
+                        val result = if (error != null) LaunchResult.Failed(error)
                         else backend.launchShortcut(context, path)
+                        feedback = result
+                        if (result is LaunchResult.Failed) {
+                            mascot.notify(
+                                MascotNotice(
+                                    "launch_issue", NoticeKind.LaunchIssue,
+                                    UiText(R.string.notice_launch_issue_title), UiText(R.string.notice_launch_issue_message)
+                                ),
+                                cooldownMs = 5_000L
+                            )
+                        }
                     },
                     icon = NeonIcons.Library
                 )
@@ -257,7 +304,8 @@ private fun RuntimeCard(
 
             KeyButton(
                 stringResource(if (expanded) R.string.rt_setup_hide else R.string.rt_setup_show),
-                { expanded = !expanded }, Modifier.fillMaxWidth()
+                { expanded = !expanded },
+                Modifier.fillMaxWidth().then(if (isFirst) Modifier.tutorialAnchor(Anchor.RuntimeSetup) else Modifier)
             )
             if (expanded) {
                 Text(stringResource(R.string.rt_setup_heading), style = MaterialTheme.typography.titleSmall, color = Lime)

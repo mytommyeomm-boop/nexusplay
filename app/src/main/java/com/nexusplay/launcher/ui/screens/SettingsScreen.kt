@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.screens
 
+import com.nexusplay.launcher.ui.mascot.tutorialAnchor
+import com.nexusplay.launcher.mascot.Anchor
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -72,6 +74,8 @@ private val plannedPreferences = listOf(
 @Composable
 fun SettingsScreen(
     contentPadding: PaddingValues,
+    onOpenLanguage: () -> Unit,
+    onOpenMascot: () -> Unit,
     onOpenJoystick: () -> Unit,
     onOpenRuntimes: () -> Unit
 ) {
@@ -92,6 +96,8 @@ fun SettingsScreen(
         item {
             PreferencePanel(
                 listOf(
+                    PreferenceEntry(NeonIcons.Globe, R.string.pref_language_title, R.string.pref_language_subtitle, onOpenLanguage),
+                    PreferenceEntry(NeonIcons.Mascot, R.string.pref_mascot_title, R.string.pref_mascot_subtitle, onOpenMascot),
                     PreferenceEntry(NeonIcons.Joystick, R.string.pref_joystick_title, R.string.pref_joystick_subtitle, onOpenJoystick),
                     PreferenceEntry(NeonIcons.Bolt, R.string.pref_runtimes_title, R.string.pref_runtimes_subtitle, onOpenRuntimes)
                 ) + plannedPreferences
@@ -152,7 +158,8 @@ private fun PreferencePanel(entries: List<PreferenceEntry>) {
     DeckPanel(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .tutorialAnchor(Anchor.SettingsPrefs),
         shape = ChamferShape(16.dp, topLeft = true),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
     ) {

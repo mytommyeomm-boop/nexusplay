@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.screens
 
+import com.nexusplay.launcher.ui.mascot.tutorialAnchor
+import com.nexusplay.launcher.mascot.Anchor
 import androidx.compose.ui.res.stringResource
 import com.nexusplay.launcher.R
 import androidx.compose.foundation.background
@@ -62,7 +64,8 @@ private fun IntakePlate() {
     DeckPanel(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .tutorialAnchor(Anchor.ImportIntake),
         shape = ChamferShape(24.dp, topLeft = true, bottomRight = true),
         screws = setOf(Corner.TopRight, Corner.BottomLeft),
         contentPadding = PaddingValues(18.dp)
@@ -152,7 +155,7 @@ private fun Steps() {
     )
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         SectionTitle(stringResource(R.string.import_steps_title))
-        Column(Modifier.padding(horizontal = 20.dp)) {
+        Column(Modifier.padding(horizontal = 20.dp).tutorialAnchor(Anchor.ImportSteps)) {
             steps.forEachIndexed { index, text ->
                 val last = index == steps.lastIndex
                 Row(Modifier.height(IntrinsicSize.Min)) {

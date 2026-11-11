@@ -350,8 +350,8 @@ fun DeckSegmented(
 
 /** Label above a control, used to keep settings groups tidy. */
 @Composable
-fun Field(label: String, content: @Composable () -> Unit) {
-    Column(Modifier.fillMaxWidth(), verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(6.dp)) {
+fun Field(label: String, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    Column(modifier.fillMaxWidth(), verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(6.dp)) {
         Text(label, style = MaterialTheme.typography.titleSmall, color = Titanium)
         content()
     }

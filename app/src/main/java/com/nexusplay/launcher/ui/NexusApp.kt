@@ -1,5 +1,12 @@
 package com.nexusplay.launcher.ui
 
+import com.nexusplay.launcher.ui.mascot.WelcomeOverlay
+import com.nexusplay.launcher.ui.mascot.TutorialOverlay
+import com.nexusplay.launcher.ui.mascot.MascotNoticeHost
+import com.nexusplay.launcher.mascot.MascotController
+import com.nexusplay.launcher.mascot.LocalMascot
+import com.nexusplay.launcher.ui.screens.FirstLaunchLanguageScreen
+import com.nexusplay.launcher.core.LanguageManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -26,7 +33,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 @Composable
-fun NexusApp(joystick: JoystickSettingsHolder, resumeTick: Int) {
+fun NexusApp(joystick: JoystickSettingsHolder, mascot: MascotController, resumeTick: Int) {
     val context = LocalContext.current
     val device = remember { DeviceInfoReader.read(context) }
 
@@ -36,10 +43,13 @@ fun NexusApp(joystick: JoystickSettingsHolder, resumeTick: Int) {
         withContext(Dispatchers.IO) { joystick.flush() }
     }
 
+    // No saved language yet means first launch: show the picker before anything else.
+    val needsLanguage = remember { LanguageManager.saved(context) == null }
+
     // rememberSaveable so rotating the phone does not replay the boot screen.
     var booting by rememberSaveable { mutableStateOf(true) }
-    LaunchedEffect(booting) {
-        if (booting) {
+    LaunchedEffect(booting, needsLanguage) {
+        if (booting && !needsLanguage) {
             delay(1900)
             booting = false
         }
@@ -48,9 +58,14 @@ fun NexusApp(joystick: JoystickSettingsHolder, resumeTick: Int) {
     CompositionLocalProvider(
         LocalDeviceInfo provides device,
         LocalJoystickSettings provides joystick,
-        LocalResumeTick provides resumeTick
+        LocalResumeTick provides resumeTick,
+        LocalMascot provides mascot
     ) {
         DeckBackground {
+            if (needsLanguage) {
+                FirstLaunchLanguageScreen()
+                return@DeckBackground
+            }
             AnimatedVisibility(
                 visible = !booting,
                 enter = fadeIn(tween(450)),
@@ -64,6 +79,11 @@ fun NexusApp(joystick: JoystickSettingsHolder, resumeTick: Int) {
                 exit = fadeOut(tween(350))
             ) {
                 SplashScreen(device)
+            }
+            if (!booting) {
+                if (!mascot.welcomeVisible) MascotNoticeHost()
+                TutorialOverlay()
+                if (mascot.welcomeVisible) WelcomeOverlay()
             }
         }
     }

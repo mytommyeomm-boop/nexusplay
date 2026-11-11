@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.components
 
+import com.nexusplay.launcher.ui.mascot.tutorialAnchor
+import com.nexusplay.launcher.mascot.Anchor
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -66,6 +68,7 @@ fun DeckNavBar(
     Box(
         Modifier
             .fillMaxWidth()
+            .tutorialAnchor(Anchor.NavBar)
             .clip(shape)
             .background(Brush.verticalGradient(listOf(Graphite2, Graphite1)))
             .border(

@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathBuilder
 import androidx.compose.ui.graphics.vector.path
-import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 /** Custom stroke icon set so the app has its own look and needs no icon library. */
@@ -141,6 +140,30 @@ object NeonIcons {
             circle(12f, 12f, 3.5f)
             line(12f, 3f, 12f, 5.5f); line(12f, 18.5f, 12f, 21f)
             line(3f, 12f, 5.5f, 12f); line(18.5f, 12f, 21f, 12f)
+        }
+    }
+
+    val Globe: ImageVector by lazy {
+        icon("Globe") {
+            circle(12f, 12f, 9f)
+            line(3f, 12f, 21f, 12f)
+            moveTo(12f, 3f)
+            arcTo(5f, 9f, 0f, false, false, 12f, 21f)
+            arcTo(5f, 9f, 0f, false, false, 12f, 3f)
+        }
+    }
+
+    val Close: ImageVector by lazy {
+        icon("Close") { line(6f, 6f, 18f, 18f); line(18f, 6f, 6f, 18f) }
+    }
+
+    val Mascot: ImageVector by lazy {
+        icon("Mascot") {
+            circle(12f, 13.5f, 7.5f)
+            moveTo(5.5f, 9f); lineTo(5f, 3.5f); lineTo(10f, 6f)
+            moveTo(18.5f, 9f); lineTo(19f, 3.5f); lineTo(14f, 6f)
+            line(9f, 13f, 9.01f, 13f); line(15f, 13f, 15.01f, 13f)
+            moveTo(10f, 16f); lineTo(12f, 17.2f); lineTo(14f, 16f)
         }
     }
 }

@@ -1,5 +1,11 @@
 package com.nexusplay.launcher.ui.screens
 
+import com.nexusplay.launcher.mascot.NoticeKind
+import com.nexusplay.launcher.mascot.MascotNotice
+import com.nexusplay.launcher.mascot.LocalMascot
+import androidx.compose.runtime.DisposableEffect
+import com.nexusplay.launcher.ui.mascot.tutorialAnchor
+import com.nexusplay.launcher.mascot.Anchor
 import androidx.compose.ui.res.stringResource
 import com.nexusplay.launcher.core.text
 import com.nexusplay.launcher.core.UiText
@@ -115,6 +121,25 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
     val s = holder.settings
     val context = LocalContext.current
     val sessionStart = remember { holder.settings }
+    val mascot = LocalMascot.current
+    // Leaving the screen after changes: write them out now and report the real outcome.
+    DisposableEffect(Unit) {
+        onDispose {
+            if (holder.settings != sessionStart) {
+                holder.flush()
+                val failed = holder.lastSaveFailed
+                mascot.notify(
+                    MascotNotice(
+                        if (failed) "joystick_save_failed" else "joystick_saved",
+                        if (failed) NoticeKind.Error else NoticeKind.GamepadSaved,
+                        UiText(if (failed) R.string.notice_save_failed_title else R.string.notice_gamepad_saved_title),
+                        UiText(if (failed) R.string.notice_save_failed_message else R.string.notice_gamepad_saved_message)
+                    ),
+                    cooldownMs = 5_000L
+                )
+            }
+        }
+    }
     val hasVibrator = remember { context.getSystemService(Vibrator::class.java)?.hasVibrator() == true }
 
     var out by remember { mutableStateOf(StickOutput.Zero) }
@@ -202,7 +227,7 @@ fun JoystickSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             item {
-                Group(stringResource(R.string.group_sensitivity), ChamferShape(16.dp, topLeft = true)) {
+                Group(stringResource(R.string.group_sensitivity), ChamferShape(16.dp, topLeft = true), anchor = Anchor.JoystickSensitivity) {
                     SliderRow(stringResource(R.string.js_sens_overall), "${f2(s.sensitivity)}x", s.sensitivity, JoystickLimits.Sensitivity,
                         { v -> holder.update { it.copy(sensitivity = v) } }, step = 0.01f)
                     SliderRow(stringResource(R.string.js_sens_x), "${f2(s.sensitivityX)}x", s.sensitivityX, JoystickLimits.Sensitivity,
@@ -381,7 +406,8 @@ private fun TestPlate(
     DeckPanel(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .tutorialAnchor(Anchor.JoystickPlate),
         shape = ChamferShape(22.dp, topLeft = true, bottomRight = true),
         contentPadding = PaddingValues(0.dp)
     ) {
@@ -414,7 +440,7 @@ private fun TestPlate(
                 )
             }
             Spacer(Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.tutorialAnchor(Anchor.JoystickCalibrate), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 KeyButton(stringResource(R.string.js_key_peak, f2(peak)), onResetPeak, modifier = Modifier.weight(1f))
                 KeyButton(stringResource(R.string.js_key_reset_cal), onResetCalibration, modifier = Modifier.weight(1f), enabled = s.calibrationGain != 1f)
                 KeyButton(stringResource(R.string.js_key_calibrate), onCalibrate, modifier = Modifier.weight(1f), enabled = !calibrating, highlight = calibrating)
@@ -545,13 +571,14 @@ private fun Swatches(hue: Float, onPick: (Float) -> Unit) {
 }
 
 @Composable
-private fun Group(title: String, shape: ChamferShape, content: @Composable ColumnScope.() -> Unit) {
+private fun Group(title: String, shape: ChamferShape, anchor: String? = null, content: @Composable ColumnScope.() -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         SectionTitle(title)
         DeckPanel(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 20.dp)
+                .then(if (anchor != null) Modifier.tutorialAnchor(anchor) else Modifier),
             shape = shape,
             contentPadding = PaddingValues(16.dp)
         ) {

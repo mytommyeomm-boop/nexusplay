@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.screens
 
+import com.nexusplay.launcher.ui.mascot.tutorialAnchor
+import com.nexusplay.launcher.mascot.Anchor
 import androidx.compose.ui.res.stringResource
 import com.nexusplay.launcher.R
 import androidx.compose.foundation.layout.Arrangement
@@ -84,7 +86,8 @@ private fun HeroPlate(device: DeviceInfo, onImport: () -> Unit) {
     DeckPanel(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .tutorialAnchor(Anchor.HomeHero),
         shape = ChamferShape(26.dp, topRight = true, bottomLeft = true),
         screws = setOf(Corner.TopLeft, Corner.BottomRight),
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 20.dp)
@@ -118,7 +121,8 @@ private fun ModuleGrid(onNavigate: (Destination) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .height(232.dp),
+            .height(232.dp)
+            .tutorialAnchor(Anchor.HomeModules),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Module(

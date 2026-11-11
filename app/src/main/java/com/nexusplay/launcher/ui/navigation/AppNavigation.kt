@@ -1,5 +1,10 @@
 package com.nexusplay.launcher.ui.navigation
 
+import kotlinx.coroutines.delay
+import com.nexusplay.launcher.ui.screens.MascotSettingsScreen
+import com.nexusplay.launcher.mascot.LocalMascot
+import androidx.compose.runtime.LaunchedEffect
+import com.nexusplay.launcher.ui.screens.LanguageSettingsScreen
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -45,9 +50,11 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
+    val mascot = LocalMascot.current
 
     // The joystick screen belongs to Settings, so the Settings key stays lit while it is open.
-    val inSettingsSub = currentRoute == JOYSTICK_ROUTE || currentRoute == RUNTIMES_ROUTE
+    val inSettingsSub = currentRoute == JOYSTICK_ROUTE || currentRoute == RUNTIMES_ROUTE ||
+        currentRoute == LANGUAGE_ROUTE || currentRoute == MASCOT_ROUTE
     val selectedRoute = if (inSettingsSub) Destination.Settings.route else currentRoute
 
     val navigateTo: (Destination) -> Unit = { destination ->
@@ -59,6 +66,28 @@ fun AppNavigation() {
                 launchSingleTop = true
                 restoreState = true
             }
+        }
+    }
+
+    // A tour was requested (suggestion banner, welcome screen or Settings > Mascot): go to its screen, then start it.
+    val pending = mascot.pendingTutorial
+    LaunchedEffect(pending) {
+        val tutorial = pending ?: return@LaunchedEffect
+        if (currentRoute != tutorial.route) {
+            val tab = Destination.entries.firstOrNull { it.route == tutorial.route }
+            if (tab != null) navigateTo(tab) else navController.navigate(tutorial.route) { launchSingleTop = true }
+            delay(500)
+        } else {
+            delay(150)
+        }
+        mascot.beginPending()
+    }
+
+    // Offer a tour once per screen, after the screen has settled.
+    LaunchedEffect(currentRoute, mascot.welcomeVisible) {
+        if (currentRoute != null && !mascot.welcomeVisible) {
+            delay(1400)
+            mascot.suggestFor(currentRoute)
         }
     }
 
@@ -113,9 +142,17 @@ fun AppNavigation() {
             composable(Destination.Settings.route) {
                 SettingsScreen(
                     padding,
+                    onOpenLanguage = { navController.navigate(LANGUAGE_ROUTE) { launchSingleTop = true } },
+                    onOpenMascot = { navController.navigate(MASCOT_ROUTE) { launchSingleTop = true } },
                     onOpenJoystick = { navController.navigate(JOYSTICK_ROUTE) { launchSingleTop = true } },
                     onOpenRuntimes = { navController.navigate(RUNTIMES_ROUTE) { launchSingleTop = true } }
                 )
+            }
+            composable(MASCOT_ROUTE) {
+                MascotSettingsScreen(padding, onBack = { navController.popBackStack() })
+            }
+            composable(LANGUAGE_ROUTE) {
+                LanguageSettingsScreen(padding, onBack = { navController.popBackStack() })
             }
             composable(RUNTIMES_ROUTE) {
                 RuntimeManagerScreen(padding, onBack = { navController.popBackStack() })

@@ -28,11 +28,11 @@ class MascotController(private val prefs: SharedPreferences) {
 
     val sizeFactor: Float get() = when (sizeLevel) { 0 -> 0.8f; 2 -> 1.25f; else -> 1f }
 
-    fun setEnabled(v: Boolean) { enabled = v; prefs.edit().putBoolean(K_ENABLED, v).apply() }
-    fun setAnimations(v: Boolean) { animations = v; prefs.edit().putBoolean(K_ANIM, v).apply() }
-    fun setTutorialSuggestions(v: Boolean) { tutorialSuggestions = v; prefs.edit().putBoolean(K_TIPS, v).apply() }
-    fun setNotifications(v: Boolean) { notifications = v; prefs.edit().putBoolean(K_NOTICES, v).apply() }
-    fun setSizeLevel(v: Int) { sizeLevel = v.coerceIn(0, 2); prefs.edit().putInt(K_SIZE, sizeLevel).apply() }
+    fun updateEnabled(v: Boolean) { enabled = v; prefs.edit().putBoolean(K_ENABLED, v).apply() }
+    fun updateAnimations(v: Boolean) { animations = v; prefs.edit().putBoolean(K_ANIM, v).apply() }
+    fun updateTutorialSuggestions(v: Boolean) { tutorialSuggestions = v; prefs.edit().putBoolean(K_TIPS, v).apply() }
+    fun updateNotifications(v: Boolean) { notifications = v; prefs.edit().putBoolean(K_NOTICES, v).apply() }
+    fun updateSizeLevel(v: Int) { sizeLevel = v.coerceIn(0, 2); prefs.edit().putInt(K_SIZE, sizeLevel).apply() }
 
     // ---- welcome (shown once; can be replayed from Settings)
     var welcomeVisible by mutableStateOf(!prefs.getBoolean(K_ONBOARD, false)); private set

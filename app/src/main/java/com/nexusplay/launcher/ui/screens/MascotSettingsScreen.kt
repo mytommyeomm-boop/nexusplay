@@ -88,10 +88,10 @@ fun MascotSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
         }
 
         Panel(ChamferShape(16.dp, topRight = true)) {
-            ToggleRow(stringResource(R.string.mascot_enabled), mascot.enabled, { mascot.setEnabled(it) }, caption = stringResource(R.string.mascot_enabled_cap))
-            ToggleRow(stringResource(R.string.mascot_animations), mascot.animations, { mascot.setAnimations(it) }, caption = stringResource(R.string.mascot_animations_cap))
-            ToggleRow(stringResource(R.string.mascot_tips), mascot.tutorialSuggestions, { mascot.setTutorialSuggestions(it) }, caption = stringResource(R.string.mascot_tips_cap))
-            ToggleRow(stringResource(R.string.mascot_notices), mascot.notifications, { mascot.setNotifications(it) }, caption = stringResource(R.string.mascot_notices_cap))
+            ToggleRow(stringResource(R.string.mascot_enabled), mascot.enabled, { mascot.updateEnabled(it) }, caption = stringResource(R.string.mascot_enabled_cap))
+            ToggleRow(stringResource(R.string.mascot_animations), mascot.animations, { mascot.updateAnimations(it) }, caption = stringResource(R.string.mascot_animations_cap))
+            ToggleRow(stringResource(R.string.mascot_tips), mascot.tutorialSuggestions, { mascot.updateTutorialSuggestions(it) }, caption = stringResource(R.string.mascot_tips_cap))
+            ToggleRow(stringResource(R.string.mascot_notices), mascot.notifications, { mascot.updateNotifications(it) }, caption = stringResource(R.string.mascot_notices_cap))
             Text(stringResource(R.string.mascot_size), style = MaterialTheme.typography.titleSmall, color = Titanium)
             DeckSegmented(
                 listOf(
@@ -100,7 +100,7 @@ fun MascotSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
                     stringResource(R.string.mascot_size_large)
                 ),
                 mascot.sizeLevel
-            ) { mascot.setSizeLevel(it) }
+            ) { mascot.updateSizeLevel(it) }
         }
 
         Text(stringResource(R.string.mascot_tutorials), style = MaterialTheme.typography.titleMedium, color = Titanium)

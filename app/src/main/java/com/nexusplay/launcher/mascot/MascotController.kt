@@ -1,5 +1,6 @@
 package com.nexusplay.launcher.mascot
 
+import com.nexusplay.launcher.core.AppLanguage
 import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -17,7 +18,10 @@ val LocalMascot = staticCompositionLocalOf<MascotController> { error("MascotCont
  * One owner for everything the mascot does: preferences (persisted), the welcome flag, notices
  * and tutorials. All values are Compose state, so screens react immediately.
  */
-class MascotController(private val prefs: SharedPreferences) {
+class MascotController(
+    private val prefs: SharedPreferences,
+    private val languageProvider: () -> AppLanguage? = { null }
+) {
 
     // ---- preferences (saved as soon as they change)
     var enabled by mutableStateOf(prefs.getBoolean(K_ENABLED, true)); private set
@@ -28,11 +32,45 @@ class MascotController(private val prefs: SharedPreferences) {
 
     val sizeFactor: Float get() = when (sizeLevel) { 0 -> 0.8f; 2 -> 1.25f; else -> 1f }
 
-    fun updateEnabled(v: Boolean) { enabled = v; prefs.edit().putBoolean(K_ENABLED, v).apply() }
-    fun updateAnimations(v: Boolean) { animations = v; prefs.edit().putBoolean(K_ANIM, v).apply() }
-    fun updateTutorialSuggestions(v: Boolean) { tutorialSuggestions = v; prefs.edit().putBoolean(K_TIPS, v).apply() }
-    fun updateNotifications(v: Boolean) { notifications = v; prefs.edit().putBoolean(K_NOTICES, v).apply() }
-    fun updateSizeLevel(v: Int) { sizeLevel = v.coerceIn(0, 2); prefs.edit().putInt(K_SIZE, sizeLevel).apply() }
+    fun setEnabled(v: Boolean) { enabled = v; prefs.edit().putBoolean(K_ENABLED, v).apply() }
+    fun setAnimations(v: Boolean) { animations = v; prefs.edit().putBoolean(K_ANIM, v).apply() }
+    fun setTutorialSuggestions(v: Boolean) { tutorialSuggestions = v; prefs.edit().putBoolean(K_TIPS, v).apply() }
+    fun setNotifications(v: Boolean) { notifications = v; prefs.edit().putBoolean(K_NOTICES, v).apply() }
+    fun setSizeLevel(v: Int) { sizeLevel = v.coerceIn(0, 2); prefs.edit().putInt(K_SIZE, sizeLevel).apply() }
+
+    // ---- art selection (event -> pose) and developer mode
+    val language: AppLanguage? get() = languageProvider()
+    var poseOverrides by mutableStateOf(PoseOverrides.parse(prefs.getString(K_OVERRIDES, null))); private set
+    var developerMode by mutableStateOf(prefs.getBoolean(K_DEV, false)); private set
+
+    /** The one place that decides which picture goes with an event. */
+    fun assetFor(event: MascotEvent, variant: Int = 0): MascotAsset =
+        PoseResolver(poseOverrides).assetFor(event, language, variant)
+
+    fun setPoseOverride(event: MascotEvent, assetId: String?) {
+        poseOverrides = if (assetId == null) poseOverrides - event.name else poseOverrides + (event.name to assetId)
+        prefs.edit().putString(K_OVERRIDES, PoseOverrides.toJson(poseOverrides)).apply()
+    }
+
+    fun clearPoseOverrides() {
+        poseOverrides = emptyMap()
+        prefs.edit().remove(K_OVERRIDES).apply()
+    }
+
+    fun setDeveloperMode(v: Boolean) { developerMode = v; prefs.edit().putBoolean(K_DEV, v).apply() }
+
+    private var devTaps = 0
+    private var devTapAt = 0L
+
+    /** Seven quick taps on the version number unlock developer mode. Returns taps still needed. */
+    fun registerVersionTap(now: Long = System.currentTimeMillis()): Int {
+        if (developerMode) return 0
+        if (now - devTapAt > 2_000) devTaps = 0
+        devTapAt = now
+        devTaps++
+        if (devTaps >= 7) { setDeveloperMode(true); devTaps = 0; return 0 }
+        return 7 - devTaps
+    }
 
     // ---- welcome (shown once; can be replayed from Settings)
     var welcomeVisible by mutableStateOf(!prefs.getBoolean(K_ONBOARD, false)); private set
@@ -135,5 +173,7 @@ class MascotController(private val prefs: SharedPreferences) {
         const val K_ONBOARD = "onboarding_done"
         const val K_DONE = "tutorials_done"
         const val K_SUGGESTED = "tutorials_suggested"
+        const val K_OVERRIDES = "pose_overrides"
+        const val K_DEV = "developer_mode"
     }
 }

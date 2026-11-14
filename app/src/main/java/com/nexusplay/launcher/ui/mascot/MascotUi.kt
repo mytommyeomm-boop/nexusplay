@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.mascot
 
+import com.nexusplay.launcher.mascot.MascotEvent
+import com.nexusplay.launcher.mascot.MascotAsset
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -71,11 +73,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nexusplay.launcher.R
-import com.nexusplay.launcher.core.LanguageManager
 import com.nexusplay.launcher.core.text
 import com.nexusplay.launcher.mascot.LocalMascot
 import com.nexusplay.launcher.mascot.MascotNotice
-import com.nexusplay.launcher.mascot.MascotPose
 import com.nexusplay.launcher.mascot.NoticeKind
 import com.nexusplay.launcher.mascot.TutorialStep
 import com.nexusplay.launcher.ui.components.ChamferShape
@@ -106,33 +106,37 @@ fun Modifier.tutorialAnchor(key: String): Modifier {
  * gentle float runs only when animations are on. Draws nothing when the mascot is switched off.
  */
 @Composable
-fun MascotImage(pose: MascotPose, size: Dp, modifier: Modifier = Modifier, floating: Boolean = true) {
+fun MascotImage(asset: MascotAsset, size: Dp, modifier: Modifier = Modifier, floating: Boolean = true) {
     val mascot = LocalMascot.current
     if (!mascot.enabled) return
-    val context = LocalContext.current
-    val language = remember { LanguageManager.saved(context) }
     val box = size * mascot.sizeFactor
     val motion = if (floating && mascot.animations) Modifier.floatingMotion() else Modifier
     Box(modifier.size(box).then(motion)) {
         if (mascot.animations) {
-            Crossfade(targetState = pose, animationSpec = tween(180), label = "mascotPose") { p ->
-                PoseImage(p, language)
-            }
+            Crossfade(targetState = asset, animationSpec = tween(180), label = "mascotPose") { a -> AssetImage(a) }
         } else {
-            PoseImage(pose, language)
+            AssetImage(asset)
         }
     }
 }
 
+/** The raw picture, never stretched. painterResource caches decoded bitmaps, so reuse costs nothing. */
 @Composable
-private fun PoseImage(pose: MascotPose, language: com.nexusplay.launcher.core.AppLanguage?) {
+fun AssetImage(asset: MascotAsset, modifier: Modifier = Modifier) {
     Image(
-        painter = painterResource(pose.drawableFor(language)),
+        painter = painterResource(asset.res),
         contentDescription = null,
         contentScale = ContentScale.Fit,
         alignment = Alignment.BottomCenter,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     )
+}
+
+/** Shows the art mapped to [event] (see MascotMapping and the developer lab). */
+@Composable
+fun EventImage(event: MascotEvent, size: Dp, modifier: Modifier = Modifier, floating: Boolean = true) {
+    val mascot = LocalMascot.current
+    MascotImage(mascot.assetFor(event), size, modifier, floating)
 }
 
 @Composable
@@ -202,7 +206,7 @@ private fun NoticeCard(n: MascotNotice, onClose: () -> Unit) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (mascot.enabled) {
-                MascotImage(n.kind.pose, 76.dp, floating = false)
+                EventImage(n.kind.event, 76.dp, floating = false)
                 Spacer(Modifier.width(8.dp))
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -320,7 +324,7 @@ private fun StepCard(step: TutorialStep) {
     ) {
         Row(verticalAlignment = Alignment.Top) {
             if (mascot.enabled) {
-                MascotImage(step.pose, 92.dp)
+                EventImage(step.event, 92.dp)
                 Spacer(Modifier.width(12.dp))
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {

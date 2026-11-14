@@ -1,5 +1,6 @@
 package com.nexusplay.launcher.ui.mascot
 
+import com.nexusplay.launcher.mascot.MascotEvent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -27,7 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nexusplay.launcher.R
 import com.nexusplay.launcher.mascot.LocalMascot
-import com.nexusplay.launcher.mascot.MascotPose
 import com.nexusplay.launcher.ui.components.ChamferShape
 import com.nexusplay.launcher.ui.components.Corner
 import com.nexusplay.launcher.ui.components.DeckBackground
@@ -55,8 +55,8 @@ fun WelcomeOverlay() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MascotImage(
-                MascotPose.Wave, 240.dp,
+            EventImage(
+                MascotEvent.Welcome, 240.dp,
                 Modifier.graphicsLayer {
                     alpha = enter.value
                     val s = 0.88f + 0.12f * enter.value

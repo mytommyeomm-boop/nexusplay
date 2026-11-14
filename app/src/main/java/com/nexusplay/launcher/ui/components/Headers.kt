@@ -1,5 +1,8 @@
 package com.nexusplay.launcher.ui.components
 
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +27,8 @@ fun ScreenHeader(
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
-    readout: String? = null
+    readout: String? = null,
+    onReadoutClick: (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier
@@ -38,7 +42,17 @@ fun ScreenHeader(
                     readout,
                     style = MaterialTheme.typography.labelSmall,
                     color = Cyan,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier
+                        .then(
+                            if (onReadoutClick != null) {
+                                Modifier.clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    onClick = onReadoutClick
+                                )
+                            } else Modifier
+                        )
+                        .padding(start = 12.dp, top = 6.dp, bottom = 8.dp)
                 )
             }
         }

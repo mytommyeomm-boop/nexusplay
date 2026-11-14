@@ -1,0 +1,525 @@
+[
+ {
+  "id": "greeting_peace_wink",
+  "src": "s1_01",
+  "categories": [
+   "Welcome",
+   "Happy"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Wink, open smile, peace sign, pink heart.",
+  "name_en": "Greeting with a peace sign",
+  "name_th": "ทักทายพร้อมชูสองนิ้ว"
+ },
+ {
+  "id": "gaming_controller_focus",
+  "src": "s1_02",
+  "categories": [
+   "Gaming"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Holding a controller, small open mouth.",
+  "name_en": "Playing with a controller",
+  "name_th": "กำลังเล่นเกมด้วยจอย"
+ },
+ {
+  "id": "cheer_arms_up",
+  "src": "s1_03",
+  "categories": [
+   "Excited",
+   "Happy"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Eyes closed, wide laugh, one arm up.",
+  "name_en": "Cheering with joy",
+  "name_th": "ดีใจสุดๆ ยกแขนเชียร์"
+ },
+ {
+  "id": "shy_hands_on_cheeks",
+  "src": "s1_04",
+  "categories": [
+   "Shy"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Blushing, hands on cheeks, mouth closed.",
+  "name_en": "Blushing shyly",
+  "name_th": "เขินอายจนแก้มแดง"
+ },
+ {
+  "id": "angry_pout_steam",
+  "src": "s1_05",
+  "categories": [
+   "Angry"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Anger mark and steam, pouting, arms crossed. Playful, not hostile.",
+  "name_en": "Pouting with annoyance",
+  "name_th": "งอนจนหน้ามุ่ย"
+ },
+ {
+  "id": "confused_question_mark",
+  "src": "s1_06",
+  "categories": [
+   "Confused"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Big green question mark, finger on chin.",
+  "name_en": "Puzzled with a question mark",
+  "name_th": "สงสัย มีเครื่องหมายคำถาม"
+ },
+ {
+  "id": "sad_crying",
+  "src": "s1_07",
+  "categories": [
+   "Sad"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Crying, tears, hands up.",
+  "name_en": "Crying",
+  "name_th": "ร้องไห้"
+ },
+ {
+  "id": "sleeping_with_cat",
+  "src": "s1_08",
+  "categories": [
+   "Sleeping"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Asleep hugging a black cat, ZZZ.",
+  "name_en": "Sleeping with a black cat",
+  "name_th": "หลับกอดแมวดำ"
+ },
+ {
+  "id": "relaxed_bubble_tea_wink",
+  "src": "s1_09",
+  "categories": [
+   "Relaxed",
+   "Idle"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Sipping bubble tea, wink.",
+  "name_en": "Sipping bubble tea with a wink",
+  "name_th": "จิบชานมไข่มุกพร้อมขยิบตา"
+ },
+ {
+  "id": "happy_holding_heart",
+  "src": "s1_10",
+  "categories": [
+   "Happy"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Eyes closed, big smile, holding a pink heart.",
+  "name_en": "Happily holding a heart",
+  "name_th": "ยิ้มมีความสุข อุ้มหัวใจ"
+ },
+ {
+  "id": "gaming_laptop_neutral",
+  "src": "s1_11",
+  "categories": [
+   "Gaming",
+   "Loading"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Calm, mouth closed, laptop and controller bubble.",
+  "name_en": "Gaming on a laptop",
+  "name_th": "เล่นเกมบนแล็ปท็อป"
+ },
+ {
+  "id": "thanks_sign_th",
+  "src": "s1_12",
+  "categories": [
+   "Notifications"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": "th",
+  "note": "Sign reads a Thai thank-you. Thai only.",
+  "name_en": "Thank-you sign (Thai)",
+  "name_th": "ป้ายขอบคุณ (ภาษาไทย)"
+ },
+ {
+  "id": "talking_pointing",
+  "src": "s1_13",
+  "categories": [
+   "Talking",
+   "Tutorial"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Smiling, pointing at the viewer, mouth open.",
+  "name_en": "Pointing and explaining",
+  "name_th": "ชี้นิ้วอธิบาย"
+ },
+ {
+  "id": "surprised_exclamation",
+  "src": "s1_14",
+  "categories": [
+   "Surprised"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Wide eyes, open mouth, exclamation and question mark.",
+  "name_en": "Surprised",
+  "name_th": "ตกใจ"
+ },
+ {
+  "id": "shy_hiding_face",
+  "src": "s1_15",
+  "categories": [
+   "Shy"
+  ],
+  "mouth": "Hidden",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Face half hidden behind a sleeve, blushing.",
+  "name_en": "Hiding shyly behind a sleeve",
+  "name_th": "หลบเขินอยู่หลังแขนเสื้อ"
+ },
+ {
+  "id": "greeting_peace_wink_burst",
+  "src": "s2_01",
+  "categories": [
+   "Welcome",
+   "Happy"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Wink, open smile, peace sign, green burst.",
+  "name_en": "Winking hello",
+  "name_th": "ขยิบตาทักทาย"
+ },
+ {
+  "id": "talking_speech_bubble",
+  "src": "s2_02",
+  "categories": [
+   "Talking"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Open smile with a baked-in ellipsis speech bubble.",
+  "name_en": "Chatting",
+  "name_th": "กำลังคุย"
+ },
+ {
+  "id": "listening_finger_on_lips",
+  "src": "s2_03",
+  "categories": [
+   "Listening",
+   "Idle"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Calm, mouth closed, finger on lips. Reads as quiet and attentive.",
+  "name_en": "Listening quietly",
+  "name_th": "ตั้งใจฟังเงียบๆ"
+ },
+ {
+  "id": "scolding_amber_eyes",
+  "src": "s2_04",
+  "categories": [
+   "Angry"
+  ],
+  "mouth": "Open",
+  "review": "NeedsReview",
+  "language": null,
+  "note": "Eyes are amber, not green. Off-model, so not used by default.",
+  "name_en": "Scolding (needs review)",
+  "name_th": "ดุเบาๆ (รอตรวจ)"
+ },
+ {
+  "id": "annoyed_arms_crossed",
+  "src": "s2_05",
+  "categories": [
+   "Angry"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Arms crossed, steam cloud, mouth closed.",
+  "name_en": "Annoyed with arms crossed",
+  "name_th": "หงุดหงิดกอดอก"
+ },
+ {
+  "id": "shy_covering_face",
+  "src": "s2_06",
+  "categories": [
+   "Shy"
+  ],
+  "mouth": "Hidden",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Hands covering her face, blushing.",
+  "name_en": "Covering her face shyly",
+  "name_th": "เขินจนต้องปิดหน้า"
+ },
+ {
+  "id": "sleeping_on_pillow",
+  "src": "s2_07",
+  "categories": [
+   "Sleeping"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Asleep on a pillow, ZZ.",
+  "name_en": "Sleeping on a pillow",
+  "name_th": "หลับบนหมอน"
+ },
+ {
+  "id": "relaxed_lying_chin_hands",
+  "src": "s2_08",
+  "categories": [
+   "Relaxed",
+   "Idle"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Lying on her belly, chin on hands, small open mouth.",
+  "name_en": "Relaxing on her belly",
+  "name_th": "นอนคว่ำพักผ่อน"
+ },
+ {
+  "id": "playful_lying_wink",
+  "src": "s2_09",
+  "categories": [
+   "Relaxed",
+   "Idle"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Lying with legs up, wink, smile.",
+  "name_en": "Playful wink",
+  "name_th": "ขยิบตาขี้เล่น"
+ },
+ {
+  "id": "excited_arms_up_stars",
+  "src": "s2_10",
+  "categories": [
+   "Excited",
+   "Happy"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Both arms up, laughing, stars.",
+  "name_en": "Excited with sparkles",
+  "name_th": "ตื่นเต้นดีใจ มีดาวระยิบ"
+ },
+ {
+  "id": "dancing_music_notes",
+  "src": "s2_11",
+  "categories": [
+   "Dancing"
+  ],
+  "mouth": "Hidden",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Small full-body figure dancing, music notes.",
+  "name_en": "Dancing",
+  "name_th": "เต้นรำ"
+ },
+ {
+  "id": "gaming_controller_calm",
+  "src": "s2_12",
+  "categories": [
+   "Gaming"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Holding a controller, calm, small open mouth.",
+  "name_en": "Playing calmly with a controller",
+  "name_th": "เล่นเกมอย่างใจเย็น"
+ },
+ {
+  "id": "relaxed_bubble_tea_eyes_closed",
+  "src": "s2_13",
+  "categories": [
+   "Relaxed",
+   "Idle"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Eyes closed, content, sipping bubble tea.",
+  "name_en": "Enjoying bubble tea",
+  "name_th": "เพลิดเพลินกับชานมไข่มุก"
+ },
+ {
+  "id": "working_laptop_focused",
+  "src": "s2_14",
+  "categories": [
+   "Loading",
+   "Gaming"
+  ],
+  "mouth": "Hidden",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Focused look over a laptop, mouth hidden.",
+  "name_en": "Working on a laptop",
+  "name_th": "กำลังทำงานบนแล็ปท็อป"
+ },
+ {
+  "id": "thinking_question_marks",
+  "src": "s2_15",
+  "categories": [
+   "Thinking",
+   "Confused"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Finger on chin, two question marks, small open mouth.",
+  "name_en": "Thinking it over",
+  "name_th": "กำลังคิด"
+ },
+ {
+  "id": "happy_hands_on_cheeks",
+  "src": "s2_16",
+  "categories": [
+   "Happy"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Eyes closed, open smile, hands on cheeks, hearts.",
+  "name_en": "Happy with hearts",
+  "name_th": "มีความสุขจนหัวใจลอย"
+ },
+ {
+  "id": "grumpy_anger_mark",
+  "src": "s2_17",
+  "categories": [
+   "Angry"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Eyes closed, anger mark, small mouth. Mild.",
+  "name_en": "Grumpy",
+  "name_th": "หน้างอ"
+ },
+ {
+  "id": "cheer_glow_stick",
+  "src": "s2_18",
+  "categories": [
+   "Excited",
+   "Cheer"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Eyes closed, wide laugh, raising a glow stick.",
+  "name_en": "Cheering with a glow stick",
+  "name_th": "เชียร์ด้วยแท่งไฟ"
+ },
+ {
+  "id": "dizzy_swirl_eyes",
+  "src": "s2_19",
+  "categories": [
+   "Confused"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Swirl eyes, hands on cheeks, sweat drops.",
+  "name_en": "Dizzy and bewildered",
+  "name_th": "มึนงงตาลาย"
+ },
+ {
+  "id": "reading_phone_heart",
+  "src": "s2_20",
+  "categories": [
+   "Listening"
+  ],
+  "mouth": "Hidden",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Looking down at a phone, heart.",
+  "name_en": "Reading a message",
+  "name_th": "กำลังอ่านข้อความ"
+ },
+ {
+  "id": "sleepy_hugging_cat",
+  "src": "s2_21",
+  "categories": [
+   "Sleepy",
+   "Sleeping"
+  ],
+  "mouth": "Closed",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Eyes closed, hugging a black cat, no ZZ. Dozing rather than deep sleep.",
+  "name_en": "Dozing off with a cat",
+  "name_th": "สัปหงกกอดแมว"
+ },
+ {
+  "id": "announcing_megaphone",
+  "src": "s2_22",
+  "categories": [
+   "Notifications"
+  ],
+  "mouth": "Open",
+  "review": "NeedsReview",
+  "language": null,
+  "note": "Shouting into a megaphone. Eye looks orange, not green. Off-model.",
+  "name_en": "Announcing with a megaphone (needs review)",
+  "name_th": "ประกาศด้วยโทรโข่ง (รอตรวจ)"
+ },
+ {
+  "id": "cheer_sign_th",
+  "src": "s2_23",
+  "categories": [
+   "Cheer"
+  ],
+  "mouth": "Hidden",
+  "review": "NeedsReview",
+  "language": "th",
+  "note": "Sign has Thai text that is not clearly legible. Verify before use.",
+  "name_en": "Cheer sign (Thai, needs review)",
+  "name_th": "ป้ายให้กำลังใจ (ภาษาไทย รอตรวจ)"
+ },
+ {
+  "id": "peeking_lying_down",
+  "src": "s2_24",
+  "categories": [
+   "Idle",
+   "Listening"
+  ],
+  "mouth": "Open",
+  "review": "Confirmed",
+  "language": null,
+  "note": "Lying face-down looking up at the viewer, mouth slightly open.",
+  "name_en": "Peeking up at you",
+  "name_th": "แอบมองขึ้นมา"
+ }
+]

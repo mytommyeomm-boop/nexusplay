@@ -1,5 +1,9 @@
 package com.nexusplay.launcher.ui.screens
 
+import com.nexusplay.launcher.mascot.NoticeKind
+import com.nexusplay.launcher.mascot.MascotNotice
+import com.nexusplay.launcher.mascot.LocalMascot
+import com.nexusplay.launcher.core.UiText
 import com.nexusplay.launcher.ui.mascot.tutorialAnchor
 import com.nexusplay.launcher.mascot.Anchor
 import android.content.Context
@@ -82,13 +86,29 @@ fun SettingsScreen(
     val device = LocalDeviceInfo.current
     val context = LocalContext.current
     val version = remember { appVersion(context) }
+    val mascot = LocalMascot.current
 
     ScreenList(contentPadding) {
         item {
             ScreenHeader(
                 stringResource(R.string.settings_title),
                 stringResource(R.string.settings_subtitle),
-                readout = "v$version"
+                readout = "v$version",
+                onReadoutClick = {
+                    val wasOn = mascot.developerMode
+                    val left = mascot.registerVersionTap()
+                    if (!wasOn && mascot.developerMode) {
+                        mascot.notify(
+                            MascotNotice("dev_on", NoticeKind.Success, UiText(R.string.dev_unlocked_title), UiText(R.string.dev_unlocked_message)),
+                            cooldownMs = 0L, force = true
+                        )
+                    } else if (!mascot.developerMode && left in 1..4) {
+                        mascot.notify(
+                            MascotNotice("dev_taps", NoticeKind.Info, UiText(R.string.dev_taps_title), UiText(R.string.dev_taps_message, left)),
+                            cooldownMs = 0L, force = true
+                        )
+                    }
+                }
             )
         }
         item { DevicePanel(device) }

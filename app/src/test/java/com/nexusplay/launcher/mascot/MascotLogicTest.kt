@@ -1,7 +1,5 @@
 package com.nexusplay.launcher.mascot
 
-import com.nexusplay.launcher.R
-import com.nexusplay.launcher.core.AppLanguage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -54,17 +52,7 @@ class MascotLogicTest {
         assertEquals(Tutorials.joystick, Tutorials.forRoute("settings/joystick"))
     }
 
-    @Test fun thaiSignArtIsOnlyUsedInThai() {
-        assertEquals(R.drawable.mascot_thanks_th, MascotPose.Thanks.drawableFor(AppLanguage.Thai))
-        assertEquals(R.drawable.mascot_happy, MascotPose.Thanks.drawableFor(AppLanguage.English))
-        assertEquals(R.drawable.mascot_happy, MascotPose.Thanks.drawableFor(null))
-        assertEquals(R.drawable.mascot_sad, MascotPose.Sad.drawableFor(AppLanguage.English))
-    }
-
-    @Test fun everyNoticeKindHasAPoseAndAPositiveDuration() {
+    @Test fun everyNoticeKindHasAPositiveDuration() {
         NoticeKind.entries.forEach { assertTrue(it.seconds > 0) }
-        assertEquals(MascotPose.Sad, NoticeKind.Error.pose)
-        assertEquals(MascotPose.Confused, NoticeKind.MissingRuntime.pose)
-        assertEquals(MascotPose.Loading, NoticeKind.Loading.pose)
     }
 }

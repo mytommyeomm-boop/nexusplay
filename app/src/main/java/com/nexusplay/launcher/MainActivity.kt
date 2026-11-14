@@ -34,7 +34,10 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
         )
         RuntimeSelection.load(this)
-        mascot = MascotController(getSharedPreferences("mascot_prefs", MODE_PRIVATE))
+        mascot = MascotController(
+            getSharedPreferences("mascot_prefs", MODE_PRIVATE),
+            languageProvider = { LanguageManager.saved(this) }
+        )
         joystick = JoystickSettingsHolder(applicationContext, JoystickSettingsStore.load(this))
         setContent {
             NexusTheme {

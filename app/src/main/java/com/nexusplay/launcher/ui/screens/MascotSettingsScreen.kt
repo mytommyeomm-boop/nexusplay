@@ -17,10 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,7 +25,7 @@ import com.nexusplay.launcher.R
 import com.nexusplay.launcher.core.UiText
 import com.nexusplay.launcher.mascot.LocalMascot
 import com.nexusplay.launcher.mascot.MascotNotice
-import com.nexusplay.launcher.mascot.MascotPose
+import com.nexusplay.launcher.mascot.MascotEvent
 import com.nexusplay.launcher.mascot.NoticeKind
 import com.nexusplay.launcher.mascot.Tutorials
 import com.nexusplay.launcher.ui.components.ChamferShape
@@ -38,17 +34,19 @@ import com.nexusplay.launcher.ui.components.DeckSegmented
 import com.nexusplay.launcher.ui.components.KeyButton
 import com.nexusplay.launcher.ui.components.StatusLed
 import com.nexusplay.launcher.ui.components.ToggleRow
-import com.nexusplay.launcher.ui.mascot.MascotImage
+import com.nexusplay.launcher.ui.mascot.EventImage
 import com.nexusplay.launcher.ui.theme.Lime
 import com.nexusplay.launcher.ui.theme.TextMuted
 import com.nexusplay.launcher.ui.theme.Titanium
 
 @Composable
-fun MascotSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
+fun MascotSettingsScreen(
+    contentPadding: PaddingValues,
+    onBack: () -> Unit,
+    onOpenGallery: () -> Unit,
+    onOpenLab: () -> Unit
+) {
     val mascot = LocalMascot.current
-    val poses = remember { MascotPose.entries }
-    var previewIndex by remember { mutableIntStateOf(0) }
-    val pose = poses[previewIndex]
 
     Column(
         Modifier
@@ -66,20 +64,19 @@ fun MascotSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
         }
         Text(stringResource(R.string.mascot_subtitle), style = MaterialTheme.typography.bodyMedium, color = Titanium)
 
-        // Tap the preview to step through every pose she has.
         DeckPanel(
             modifier = Modifier.fillMaxWidth(),
             shape = ChamferShape(22.dp, topLeft = true, bottomRight = true),
-            onClick = if (mascot.enabled) { { previewIndex = (previewIndex + 1) % poses.size } } else null,
+            onClick = onOpenGallery,
             contentPadding = PaddingValues(14.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (mascot.enabled) {
-                    Box(Modifier.size(150.dp), contentAlignment = Alignment.BottomCenter) { MascotImage(pose, 140.dp) }
+                    Box(Modifier.size(150.dp), contentAlignment = Alignment.BottomCenter) { EventImage(MascotEvent.Idle, 140.dp) }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(stringResource(pose.nameRes), style = MaterialTheme.typography.titleMedium, color = Lime)
-                        Text(stringResource(R.string.mascot_preview_hint), style = MaterialTheme.typography.bodySmall, color = Titanium)
+                        Text(stringResource(R.string.mascot_open_gallery), style = MaterialTheme.typography.titleMedium, color = Lime)
+                        Text(stringResource(R.string.gallery_subtitle), style = MaterialTheme.typography.bodySmall, color = Titanium)
                     }
                 } else {
                     Text(stringResource(R.string.mascot_off_hint), style = MaterialTheme.typography.bodyMedium, color = Titanium)
@@ -88,10 +85,10 @@ fun MascotSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
         }
 
         Panel(ChamferShape(16.dp, topRight = true)) {
-            ToggleRow(stringResource(R.string.mascot_enabled), mascot.enabled, { mascot.updateEnabled(it) }, caption = stringResource(R.string.mascot_enabled_cap))
-            ToggleRow(stringResource(R.string.mascot_animations), mascot.animations, { mascot.updateAnimations(it) }, caption = stringResource(R.string.mascot_animations_cap))
-            ToggleRow(stringResource(R.string.mascot_tips), mascot.tutorialSuggestions, { mascot.updateTutorialSuggestions(it) }, caption = stringResource(R.string.mascot_tips_cap))
-            ToggleRow(stringResource(R.string.mascot_notices), mascot.notifications, { mascot.updateNotifications(it) }, caption = stringResource(R.string.mascot_notices_cap))
+            ToggleRow(stringResource(R.string.mascot_enabled), mascot.enabled, { mascot.setEnabled(it) }, caption = stringResource(R.string.mascot_enabled_cap))
+            ToggleRow(stringResource(R.string.mascot_animations), mascot.animations, { mascot.setAnimations(it) }, caption = stringResource(R.string.mascot_animations_cap))
+            ToggleRow(stringResource(R.string.mascot_tips), mascot.tutorialSuggestions, { mascot.setTutorialSuggestions(it) }, caption = stringResource(R.string.mascot_tips_cap))
+            ToggleRow(stringResource(R.string.mascot_notices), mascot.notifications, { mascot.setNotifications(it) }, caption = stringResource(R.string.mascot_notices_cap))
             Text(stringResource(R.string.mascot_size), style = MaterialTheme.typography.titleSmall, color = Titanium)
             DeckSegmented(
                 listOf(
@@ -100,7 +97,7 @@ fun MascotSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
                     stringResource(R.string.mascot_size_large)
                 ),
                 mascot.sizeLevel
-            ) { mascot.updateSizeLevel(it) }
+            ) { mascot.setSizeLevel(it) }
         }
 
         Text(stringResource(R.string.mascot_tutorials), style = MaterialTheme.typography.titleMedium, color = Titanium)
@@ -150,6 +147,9 @@ fun MascotSettingsScreen(contentPadding: PaddingValues, onBack: () -> Unit) {
             },
             Modifier.fillMaxWidth()
         )
+        if (mascot.developerMode) {
+            KeyButton(stringResource(R.string.mascot_open_lab), onOpenLab, Modifier.fillMaxWidth(), highlight = true)
+        }
     }
 }
 

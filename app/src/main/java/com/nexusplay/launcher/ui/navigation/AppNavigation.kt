@@ -1,5 +1,7 @@
 package com.nexusplay.launcher.ui.navigation
 
+import com.nexusplay.launcher.ui.screens.MascotLabScreen
+import com.nexusplay.launcher.ui.screens.MascotGalleryScreen
 import kotlinx.coroutines.delay
 import com.nexusplay.launcher.ui.screens.MascotSettingsScreen
 import com.nexusplay.launcher.mascot.LocalMascot
@@ -53,8 +55,9 @@ fun AppNavigation() {
     val mascot = LocalMascot.current
 
     // The joystick screen belongs to Settings, so the Settings key stays lit while it is open.
-    val inSettingsSub = currentRoute == JOYSTICK_ROUTE || currentRoute == RUNTIMES_ROUTE ||
-        currentRoute == LANGUAGE_ROUTE || currentRoute == MASCOT_ROUTE
+    val inSettingsSub = currentRoute in setOf(
+        JOYSTICK_ROUTE, RUNTIMES_ROUTE, LANGUAGE_ROUTE, MASCOT_ROUTE, MASCOT_GALLERY_ROUTE, MASCOT_LAB_ROUTE
+    )
     val selectedRoute = if (inSettingsSub) Destination.Settings.route else currentRoute
 
     val navigateTo: (Destination) -> Unit = { destination ->
@@ -149,7 +152,18 @@ fun AppNavigation() {
                 )
             }
             composable(MASCOT_ROUTE) {
-                MascotSettingsScreen(padding, onBack = { navController.popBackStack() })
+                MascotSettingsScreen(
+                    padding,
+                    onBack = { navController.popBackStack() },
+                    onOpenGallery = { navController.navigate(MASCOT_GALLERY_ROUTE) { launchSingleTop = true } },
+                    onOpenLab = { navController.navigate(MASCOT_LAB_ROUTE) { launchSingleTop = true } }
+                )
+            }
+            composable(MASCOT_GALLERY_ROUTE) {
+                MascotGalleryScreen(padding, onBack = { navController.popBackStack() })
+            }
+            composable(MASCOT_LAB_ROUTE) {
+                MascotLabScreen(padding, onBack = { navController.popBackStack() })
             }
             composable(LANGUAGE_ROUTE) {
                 LanguageSettingsScreen(padding, onBack = { navController.popBackStack() })
